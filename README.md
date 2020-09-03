@@ -1,4 +1,4 @@
-#Kuvar-SIMS
+# KuvarSIMS
 
 Predmetni projekat specifikacija i modeliranje softvera "Kuvar".
 
