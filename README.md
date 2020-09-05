@@ -9,3 +9,5 @@ Predmetni projekat specifikacija i modeliranje softvera "Kuvar".
  Petljanski Jovan SW-31-2018
  
  Milovanović Milovan SW-41-2018
+
+Tim: ROBOT ™
