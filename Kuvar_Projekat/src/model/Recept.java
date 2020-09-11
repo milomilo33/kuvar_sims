@@ -1,22 +1,26 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Recept {
+public class Recept implements Serializable {
 	private Integer sifraRecepata;
 	private String naziv;
 	private Tezina tezina;
 	private String opis;
 	private Float vremePripreme;
-	private Map<Namirnica,Sastojanje> namirniceSaSastojanjem;
+	private Map<Namirnica, Sastojanje> namirniceSaSastojanjem;
 	private Korisnik autor;
 	private List<Oprema> oprema;
 	private List<Komentar> komentari;
-	public Recept() {}
+	private List<Kategorija> kategorije;
+
+	public Recept() {
+	}
 
 	public Recept(Integer sifraRecepata, String naziv, Tezina tezina, String opis,
-			Float vremePripreme, Map<Namirnica,Sastojanje> namirniceSaSastojanjem, Korisnik autor, List<Oprema> oprema, List<Komentar> komentari) {
+				  Float vremePripreme, Map<Namirnica, Sastojanje> namirniceSaSastojanjem, Korisnik autor, List<Oprema> oprema, List<Komentar> komentari, List<Kategorija> kategorije) {
 		this.sifraRecepata = sifraRecepata;
 		this.naziv = naziv;
 		this.tezina = tezina;
@@ -26,6 +30,7 @@ public class Recept {
 		this.autor = autor;
 		this.oprema = oprema;
 		this.komentari = komentari;
+		this.kategorije = kategorije;
 	}
 
 	public Integer getSifraRecepata() {
@@ -75,19 +80,31 @@ public class Recept {
 	public void setNamirniceSaSastojanjem(Map<Namirnica,Sastojanje> namirniceSaSastojanjem) {
 		this.namirniceSaSastojanjem = namirniceSaSastojanjem;
 	}
+
 	public Float getSrednjaOcena() {
 		Integer suma = 0;
 		for (Komentar k : this.komentari)
 			suma += k.getOcena();
 		return (float) (suma / this.komentari.size());
 	}
+
 	public Korisnik getAutor() {
 		return autor;
 	}
 
+	public List<Kategorija> getKategorije() {
+		return kategorije;
+	}
+
+	public void setKategorije(List<Kategorija> kategorije) {
+		this.kategorije = kategorije;
+	}
+
+
 	public void setAutor(Korisnik autor) {
 		this.autor = autor;
 	}
+
 	public List<Oprema> getOprema() {
 		return oprema;
 	}

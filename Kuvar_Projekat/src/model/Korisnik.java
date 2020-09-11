@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class Korisnik {
+public class Korisnik implements Serializable {
 	private String ime;
 	private String prezime;
 	private Date datumRodjenja;
@@ -125,6 +126,6 @@ public class Korisnik {
 	}
 	
 	public Boolean proveriKorisnika(Korisnik korisnik) {
-		return this.username == korisnik.getUsername();
+		return this.username.equals(korisnik.getUsername());
 	}
 }

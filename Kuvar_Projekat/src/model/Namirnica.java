@@ -1,15 +1,20 @@
 package model;
 
-public class Namirnica {
+import java.io.Serializable;
+
+public class Namirnica implements Serializable {
 	private Integer sifraNamirnice;
 	private String naziv;
+
 	public Namirnica() {
-		
+
 	}
+
 	public Namirnica(Integer sifraNamirnice, String naziv) {
 		this.sifraNamirnice = sifraNamirnice;
 		this.naziv = naziv;
 	}
+
 	public Integer getSifraNamirnice() {
 		return sifraNamirnice;
 	}
