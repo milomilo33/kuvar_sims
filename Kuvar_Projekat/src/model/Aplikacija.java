@@ -6,6 +6,7 @@ import java.util.List;
 public class Aplikacija {
 	private List<Korisnik> korisnici;
 	private List<Recept> recepti;
+	private Korisnik trenutniKorisnik;
 	public Aplikacija() {}
 	public Aplikacija(List<Korisnik> korisnici, List<Recept> recepti) {
 		this.korisnici = korisnici;
@@ -22,6 +23,12 @@ public class Aplikacija {
 	}
 	public void setRecepti(List<Recept> recepti) {
 		this.recepti = recepti;
+	}
+	public Korisnik getTrenutniKorisnik() {
+		return trenutniKorisnik;
+	}
+	public void setTrenutniKorisnik(Korisnik trenutniKorisnik) {
+		this.trenutniKorisnik = trenutniKorisnik;
 	}
 	public void dodajNovogKorisnika(String ime, String prezime, Date datumRodjenja, String username, String password,
 			String brojTelefona, String adresa) {
