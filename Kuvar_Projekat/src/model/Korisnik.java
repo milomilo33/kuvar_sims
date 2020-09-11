@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -116,14 +115,16 @@ public class Korisnik {
 	public void setKnjigeRecepata(List<KnjigaRecepata> knjigeRecepata) {
 		this.knjigeRecepata = knjigeRecepata;
 	}
+	
 	public void pretplatiSe(Korisnik korisnik) {
-		
-	}
-	public void dodajReceptKorisnika(Recept r) {
-		
-	}
-	public Boolean proveriKorisnika(Korisnik korisnik) {
-		return true;
+		this.jePretplacen.add(korisnik);
 	}
 	
+	public void dodajReceptKorisnika(Recept r) {
+		this.recepti.add(r);
+	}
+	
+	public Boolean proveriKorisnika(Korisnik korisnik) {
+		return this.username == korisnik.getUsername();
+	}
 }

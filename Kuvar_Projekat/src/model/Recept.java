@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -77,8 +76,10 @@ public class Recept {
 		this.namirniceSaSastojanjem = namirniceSaSastojanjem;
 	}
 	public Float getSrednjaOcena() {
-		Float tmp = 1.0f;
-		return tmp;
+		Integer suma = 0;
+		for (Komentar k : this.komentari)
+			suma += k.getOcena();
+		return (float) (suma / this.komentari.size());
 	}
 	public Korisnik getAutor() {
 		return autor;
@@ -104,10 +105,10 @@ public class Recept {
 	}
 
 	public void dodajKomentar(Komentar komentar) {
-		
+		this.komentari.add(komentar);
 	}
 	public void dodajNamirnicuSaSastojanjem(Namirnica n, Sastojanje s) {
-		
+		this.namirniceSaSastojanjem.put(n, s);
 	}
 	public Boolean proveraKriterijuma(String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme) {
 		return true;
