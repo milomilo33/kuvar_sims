@@ -22,6 +22,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import model.Tezina;
 
 public class GlavniProzor extends JFrame {
 
@@ -35,15 +42,12 @@ public class GlavniProzor extends JFrame {
 	private final JMenu mnPregled = new JMenu("Pregled");
 	private final JTextField txtNazivRecepta = new JTextField();
 	private final JLabel lblUnesiteNazivRecepta = new JLabel("Unesite naziv recepta:");
-	private final JLabel lblKriterijumi = new JLabel("             Kriterijumi:             ");
-	private final JList list = new JList();
+	private final JLabel lblKriterijumi = new JLabel("Kriterijumi:");
 	private final JScrollPane scrollPane = new JScrollPane();
 	private final JPanel panel = new JPanel();
 	private final JButton btnNamirnice = new JButton("Namirnice");
 	private final JButton btnKategorije = new JButton("Kategorije");
 	private final JButton btnOprema = new JButton("Oprema");
-	private final JButton btnTezina = new JButton("Tezina");
-	private final JButton btnVremePripreme = new JButton("Vreme pripreme");
 	private final JMenuItem mntmDodajNamirnice = new JMenuItem("Dodaj namirnice");
 	private final JMenuItem mntmDodajOpremu = new JMenuItem("Dodaj opremu");
 	private final JMenuItem mntmDodajKnjiguRecepata = new JMenuItem("Dodaj knjigu recepata");
@@ -56,6 +60,8 @@ public class GlavniProzor extends JFrame {
 	private final JButton btnOdjaviSe = new JButton("Odjavi se");
 	private final JLabel lblDobroDosli = new JLabel("Dobro dosli, ");
 	private final JMenuItem mntmNajpopularnijiRecepti = new JMenuItem("Najpopularniji recepti");
+	private JTextField textFieldVremePripreme;
+	private final JList list = new JList();
 
 	/**
 	 * Launch the application.
@@ -77,6 +83,8 @@ public class GlavniProzor extends JFrame {
 	 * Create the frame.
 	 */
 	public GlavniProzor() {
+		setResizable(false);
+		txtNazivRecepta.setBounds(212, 90, 368, 27);
 		txtNazivRecepta.setToolTipText("Search");
 		txtNazivRecepta.setColumns(10);
 		initGUI();
@@ -116,122 +124,100 @@ public class GlavniProzor extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{207, 373, 86, 0};
-		gbl_contentPane.rowHeights = new int[]{26, 16, 26, 32, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		btnPrijava.setBounds(54, 9, 75, 23);
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		
-		GridBagConstraints gbc_btnPrijava = new GridBagConstraints();
-		gbc_btnPrijava.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnPrijava.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPrijava.gridx = 0;
-		gbc_btnPrijava.gridy = 0;
-		contentPane.add(btnPrijava, gbc_btnPrijava);
+		textFieldVremePripreme = new JTextField();
+		textFieldVremePripreme.setToolTipText("vreme pripreme");
+		textFieldVremePripreme.setColumns(10);
 		
-		GridBagConstraints gbc_lblDobroDosli = new GridBagConstraints();
-		gbc_lblDobroDosli.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDobroDosli.gridx = 1;
-		gbc_lblDobroDosli.gridy = 0;
-		contentPane.add(lblDobroDosli, gbc_lblDobroDosli);
+		JLabel lblUnesiVremePripreme = new JLabel("Unesi vreme pripreme:");
 		
-		GridBagConstraints gbc_btnOdjaviSe = new GridBagConstraints();
-		gbc_btnOdjaviSe.insets = new Insets(0, 0, 5, 0);
-		gbc_btnOdjaviSe.gridx = 2;
-		gbc_btnOdjaviSe.gridy = 0;
-		contentPane.add(btnOdjaviSe, gbc_btnOdjaviSe);
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(Tezina.values()));
 		
-		GridBagConstraints gbc_lblUkolikoNemateNalog = new GridBagConstraints();
-		gbc_lblUkolikoNemateNalog.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lblUkolikoNemateNalog.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUkolikoNemateNalog.gridx = 0;
-		gbc_lblUkolikoNemateNalog.gridy = 1;
-		contentPane.add(lblUkolikoNemateNalog, gbc_lblUkolikoNemateNalog);
-		
-		GridBagConstraints gbc_btnRegistracija = new GridBagConstraints();
-		gbc_btnRegistracija.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnRegistracija.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRegistracija.gridx = 0;
-		gbc_btnRegistracija.gridy = 2;
-		contentPane.add(btnRegistracija, gbc_btnRegistracija);
-		
-		GridBagConstraints gbc_lblUnesiteNazivRecepta = new GridBagConstraints();
-		gbc_lblUnesiteNazivRecepta.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUnesiteNazivRecepta.anchor = GridBagConstraints.EAST;
-		gbc_lblUnesiteNazivRecepta.gridx = 0;
-		gbc_lblUnesiteNazivRecepta.gridy = 3;
-		contentPane.add(lblUnesiteNazivRecepta, gbc_lblUnesiteNazivRecepta);
-		
-		GridBagConstraints gbc_txtNazivRecepta = new GridBagConstraints();
-		gbc_txtNazivRecepta.insets = new Insets(0, 0, 5, 5);
-		gbc_txtNazivRecepta.fill = GridBagConstraints.BOTH;
-		gbc_txtNazivRecepta.gridx = 1;
-		gbc_txtNazivRecepta.gridy = 3;
-		contentPane.add(txtNazivRecepta, gbc_txtNazivRecepta);
-		
-		GridBagConstraints gbc_lblKriterijumi = new GridBagConstraints();
-		gbc_lblKriterijumi.insets = new Insets(0, 0, 5, 0);
-		gbc_lblKriterijumi.gridx = 2;
-		gbc_lblKriterijumi.gridy = 3;
-		contentPane.add(lblKriterijumi, gbc_lblKriterijumi);
-		
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
-		gbc_scrollPane.gridx = 1;
-		gbc_scrollPane.gridy = 4;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		JLabel lblIzaberiTezinuRecepta = new JLabel("Izaberi tezinu recepta:");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(92)
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnNamirnice)
+								.addComponent(btnKategorije, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnOprema, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+							.addGap(34)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblUnesiVremePripreme)
+								.addComponent(lblIzaberiTezinuRecepta))
+							.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(textFieldVremePripreme, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))))
+					.addContainerGap(18, GroupLayout.PREFERRED_SIZE))
+		);
+		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
+			public void actionPerformed(ActionEvent e) {
+				ProzorIzboraNamirnica.main(null);
+			}
+		});
+		btnOprema.addActionListener(new ActionListener() {  //pritisnuto dugme opreme, otvara prozor za izbor opreme
+			public void actionPerformed(ActionEvent e) {
+				ProzorIzboraOpreme.main(null);
+			}
+		});
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnNamirnice)
+					.addGap(33)
+					.addComponent(btnKategorije)
+					.addGap(37)
+					.addComponent(btnOprema)
+					.addGap(60)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldVremePripreme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUnesiVremePripreme))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblIzaberiTezinuRecepta))
+					.addContainerGap(219, Short.MAX_VALUE))
+		);
+		panel.setBounds(585, 128, 254, 482);
+		panel.setLayout(gl_panel);
 		list.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Korisnik već postoji!", "Greška", JOptionPane.ERROR_MESSAGE);
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("wooooooooooooooooow");
 			}
 		});
+		scrollPane.setBounds(212, 128, 368, 339);
+		
 		scrollPane.setViewportView(list);
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 2;
-		gbc_panel.gridy = 4;
-		contentPane.add(panel, gbc_panel);
-		/*panel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));*/
-		
-		panel.add(btnNamirnice, "2, 2");
-		
-		panel.add(btnKategorije, "2, 4");
-		
-		panel.add(btnOprema, "2, 6");
-		
-		panel.add(btnTezina, "2, 8");
-		
-		panel.add(btnVremePripreme, "2, 10");
+		contentPane.setLayout(null);
+		lblUkolikoNemateNalog.setBounds(5, 37, 176, 14);
+		contentPane.add(lblUkolikoNemateNalog);
+		contentPane.add(scrollPane);
+		contentPane.add(panel);
+		lblUnesiteNazivRecepta.setBounds(58, 96, 108, 14);
+		contentPane.add(lblUnesiteNazivRecepta);
+		contentPane.add(txtNazivRecepta);
+		btnRegistracija.setBounds(48, 56, 89, 23);
+		contentPane.add(btnRegistracija);
+		contentPane.add(btnPrijava);
+		lblDobroDosli.setBounds(366, 13, 60, 14);
+		contentPane.add(lblDobroDosli);
+		btnOdjaviSe.setBounds(679, 9, 77, 23);
+		contentPane.add(btnOdjaviSe);
+		lblKriterijumi.setBounds(685, 96, 84, 14);
+		contentPane.add(lblKriterijumi);
 	}
-
 }
