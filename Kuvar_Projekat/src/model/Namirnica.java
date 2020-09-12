@@ -27,5 +27,4 @@ public class Namirnica implements Serializable {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	
 }

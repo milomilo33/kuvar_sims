@@ -1,41 +1,37 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.event.ListSelectionListener;
+
+import model.Namirnica;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 
 public class ProzorIzboraNamirnica {
 
+	private List<Namirnica> izabraneNamirnice;
+	
 	private JFrame frmIzborNamirnica;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ProzorIzboraNamirnica window = new ProzorIzboraNamirnica();
-					window.frmIzborNamirnica.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public ProzorIzboraNamirnica() {
+	public ProzorIzboraNamirnica(List<Namirnica> izabraneNamirnice) {
+		this.izabraneNamirnice = izabraneNamirnice;
 		initialize();
+		this.frmIzborNamirnica.setVisible(true);
 	}
 
 	/**
@@ -61,8 +57,9 @@ public class ProzorIzboraNamirnica {
 		scrollPane_1.setBounds(24, 24, 209, 223);
 		frmIzborNamirnica.getContentPane().add(scrollPane_1);
 		
-		JList list = new JList();
+		JList list = new JList(this.izabraneNamirnice.toArray());
 		scrollPane_1.setViewportView(list);
+	
 		
 		JLabel lblIzaberiNamirnicu = new JLabel("Izaberi namirnicu:");
 		lblIzaberiNamirnicu.setBounds(88, 11, 138, 14);

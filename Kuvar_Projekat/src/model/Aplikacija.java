@@ -169,6 +169,10 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
+		
+		public ArrayList<Namirnica> getNamirnice() {
+			return this.namirnice;
+		}
 	}
 
 	public class MenadzerKategorija {

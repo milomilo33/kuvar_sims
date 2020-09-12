@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
@@ -22,16 +24,31 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import model.Aplikacija;
+import model.Namirnica;
+import model.Oprema;
+import model.Recept;
 import model.Tezina;
+import controller.KontrolerGlavnogProzora;
+import event.Observer;
+import event.UpdateEvent;
 
-public class GlavniProzor extends JFrame {
+public class GlavniProzor extends JFrame implements Observer{
 
+	private Aplikacija aplikacija;
+	private KontrolerGlavnogProzora kontroler;
+	private List<Recept> rezultatPretrage;
+	private List<Namirnica> kriterijumPretrageNamirnice;
+	private List<Oprema> kriterijumPretrageOprema;
+	
 	private JPanel contentPane;
 	private final JButton btnPrijava = new JButton("Prijavi se");
 	private final JButton btnRegistracija = new JButton("Registracija");
@@ -66,27 +83,20 @@ public class GlavniProzor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GlavniProzor frame = new GlavniProzor();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public GlavniProzor() {
+	public GlavniProzor(Aplikacija aplikacija, KontrolerGlavnogProzora kontroler) {
 		setResizable(false);
 		txtNazivRecepta.setBounds(212, 90, 368, 27);
 		txtNazivRecepta.setToolTipText("Search");
 		txtNazivRecepta.setColumns(10);
+		this.aplikacija = aplikacija;
+		this.kontroler = kontroler;
+		this.rezultatPretrage = new ArrayList<Recept>();
+		this.kriterijumPretrageNamirnice = new ArrayList<Namirnica>();
+		this.kriterijumPretrageOprema = new ArrayList<Oprema>();
 		initGUI();
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
@@ -164,7 +174,9 @@ public class GlavniProzor extends JFrame {
 		);
 		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
 			public void actionPerformed(ActionEvent e) {
-				ProzorIzboraNamirnica.main(null);
+				
+				//ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica();
+				
 			}
 		});
 		btnOprema.addActionListener(new ActionListener() {  //pritisnuto dugme opreme, otvara prozor za izbor opreme
@@ -219,5 +231,10 @@ public class GlavniProzor extends JFrame {
 		contentPane.add(btnOdjaviSe);
 		lblKriterijumi.setBounds(685, 96, 84, 14);
 		contentPane.add(lblKriterijumi);
+	}
+	
+	
+	public void updatePerformed(UpdateEvent e) {
+		
 	}
 }
