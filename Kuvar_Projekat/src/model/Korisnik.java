@@ -37,12 +37,26 @@ public class Korisnik implements Serializable {
 		this.oprema = oprema;
 		this.knjigeRecepata = knjigeRecepata;
 	}
+
+	public Korisnik(String ime, String prezime, Date datumRodjenja, String username, String password, String brojTelefona, String adresa) {
+		this.ime = ime;
+		this.prezime = prezime;
+		this.datumRodjenja = datumRodjenja;
+		this.username = username;
+		this.password = password;
+		this.brojTelefona = brojTelefona;
+		this.adresa = adresa;
+		this.uloga = Uloga.KUVAR;
+	}
+
 	public String getIme() {
 		return ime;
 	}
+
 	public void setIme(String ime) {
 		this.ime = ime;
 	}
+
 	public String getPrezime() {
 		return prezime;
 	}
