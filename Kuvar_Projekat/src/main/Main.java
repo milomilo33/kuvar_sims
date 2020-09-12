@@ -1,15 +1,20 @@
 package main;
 
-import utility.DataSerialization;
+import model.Aplikacija;
+import utility.IDGenerator;
 
 import java.io.IOException;
+
 
 public class Main {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		DataSerialization data = new DataSerialization();
-		data.write();
-		data = data.read();
+		IDGenerator.INSTANCE.deserialize();
+		Aplikacija aplikacija = new Aplikacija();
+
+
+		aplikacija.sacuvajStanje();
+		IDGenerator.INSTANCE.serialize();
 
 	}
 
