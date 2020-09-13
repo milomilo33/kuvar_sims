@@ -21,11 +21,17 @@ public class Oprema implements Serializable {
 	public void setSifraOpreme(Integer sifraOpreme) {
 		this.sifraOpreme = sifraOpreme;
 	}
+
 	public String getNaziv() {
 		return naziv;
 	}
+
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	
+
+	@Override
+	public String toString() {
+		return naziv;
+	}
 }

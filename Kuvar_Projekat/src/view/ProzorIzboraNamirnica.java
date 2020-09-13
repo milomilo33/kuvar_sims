@@ -1,25 +1,18 @@
 package view;
 
-import java.awt.EventQueue;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.event.ListSelectionListener;
-
 import model.Namirnica;
 
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
+import javax.swing.event.ListSelectionListener;
+import java.util.List;
 
 public class ProzorIzboraNamirnica {
 
 	private List<Namirnica> izabraneNamirnice;
 	
 	private JFrame frmIzborNamirnica;
+
 
 	/**
 	 * Launch the application.
@@ -42,13 +35,13 @@ public class ProzorIzboraNamirnica {
 		frmIzborNamirnica.setTitle("Izbor namirnica");
 		frmIzborNamirnica.setResizable(false);
 		frmIzborNamirnica.setBounds(100, 100, 266, 555);
-		frmIzborNamirnica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmIzborNamirnica.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmIzborNamirnica.getContentPane().setLayout(null);
-		
+
 		JButton btnDodajNamirnicuU = new JButton("Dodaj namirnicu u izbor");
 		btnDodajNamirnicuU.setBounds(24, 271, 209, 23);
 		frmIzborNamirnica.getContentPane().add(btnDodajNamirnicuU);
-		
+
 		JButton btnPrihvati = new JButton("Prihvati");
 		btnPrihvati.setBounds(50, 475, 162, 23);
 		frmIzborNamirnica.getContentPane().add(btnPrihvati);
@@ -77,5 +70,6 @@ public class ProzorIzboraNamirnica {
 			public void valueChanged(ListSelectionEvent e) {
 			}
 		});
+
 	}
 }

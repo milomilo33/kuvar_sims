@@ -1,45 +1,21 @@
 package view;
 
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import controller.KontrolerGlavnogProzora;
+import controller.KontrolerProzoraDodavanjaRecepta;
+import event.Observer;
+import event.UpdateEvent;
+import model.*;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.AbstractListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-
-import model.Aplikacija;
-import model.Namirnica;
-import model.Oprema;
-import model.Recept;
-import model.Tezina;
-import controller.KontrolerGlavnogProzora;
-import event.Observer;
-import event.UpdateEvent;
 
 public class GlavniProzor extends JFrame implements Observer{
 
@@ -94,30 +70,36 @@ public class GlavniProzor extends JFrame implements Observer{
 		txtNazivRecepta.setColumns(10);
 		this.aplikacija = aplikacija;
 		this.kontroler = kontroler;
-		this.rezultatPretrage = new ArrayList<Recept>();
-		this.kriterijumPretrageNamirnice = new ArrayList<Namirnica>();
-		this.kriterijumPretrageOprema = new ArrayList<Oprema>();
+		this.rezultatPretrage = new ArrayList<>();
+		this.kriterijumPretrageNamirnice = new ArrayList<>();
+		this.kriterijumPretrageOprema = new ArrayList<>();
 		initGUI();
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
 	private void initGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 861, 660);
-		
+
 		setJMenuBar(menuBar);
-		
+
 		menuBar.add(mnDodavanje);
-		
+
 		mnDodavanje.add(mntmDodajRecept);
-		
+		mntmDodajRecept.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProzorDodavanjaRecepta prozorDodavanjaRecepta = new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija));
+			}
+		});
+
 		mnDodavanje.add(mntmDodajNamirnice);
-		
+
 		mnDodavanje.add(mntmDodajOpremu);
-		
+
 		mnDodavanje.add(mntmDodajKnjiguRecepata);
-		
+
 		mnDodavanje.add(mntmDodajKategoriju);
-		
+
 		menuBar.add(mnPregled);
 		
 		mnPregled.add(mntmNajpopularnijiRecepti);
@@ -174,9 +156,9 @@ public class GlavniProzor extends JFrame implements Observer{
 		);
 		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
 			public void actionPerformed(ActionEvent e) {
-				
-				//ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica();
-				
+				kriterijumPretrageNamirnice.add(new Namirnica());
+				ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica(kriterijumPretrageNamirnice);
+
 			}
 		});
 		btnOprema.addActionListener(new ActionListener() {  //pritisnuto dugme opreme, otvara prozor za izbor opreme

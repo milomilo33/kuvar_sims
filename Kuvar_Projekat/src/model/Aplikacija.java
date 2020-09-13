@@ -10,10 +10,31 @@ import java.util.List;
 
 public class Aplikacija {
 	private Korisnik trenutniKorisnik;
-	public MenadzerKorisnika menadzerKorisnika;
+	private MenadzerKorisnika menadzerKorisnika;
 	private MenadzerRecepata menadzerRecepata;
 	private MenadzerNamirnica menadzerNamirnica;
 	private MenadzerOpreme menadzerOpreme;
+
+	public MenadzerKorisnika getMenadzerKorisnika() {
+		return menadzerKorisnika;
+	}
+
+	public MenadzerRecepata getMenadzerRecepata() {
+		return menadzerRecepata;
+	}
+
+	public MenadzerNamirnica getMenadzerNamirnica() {
+		return menadzerNamirnica;
+	}
+
+	public MenadzerOpreme getMenadzerOpreme() {
+		return menadzerOpreme;
+	}
+
+	public MenadzerKategorija getMenadzerKategorija() {
+		return menadzerKategorija;
+	}
+
 	private MenadzerKategorija menadzerKategorija;
 
 	public Aplikacija() throws IOException, ClassNotFoundException {
@@ -160,7 +181,7 @@ public class Aplikacija {
 
 		public void deserialize() throws IOException, ClassNotFoundException {
 			try {
-				FileInputStream fileIn = new FileInputStream("data/recepti.ser");
+				FileInputStream fileIn = new FileInputStream("data/namirnice.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				namirnice = (ArrayList<Namirnica>) in.readObject();
 				fileIn.close();
@@ -197,7 +218,7 @@ public class Aplikacija {
 
 		public void deserialize() throws IOException, ClassNotFoundException {
 			try {
-				FileInputStream fileIn = new FileInputStream("data/recepti.ser");
+				FileInputStream fileIn = new FileInputStream("data/kategorije.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				kategorije = (ArrayList<Kategorija>) in.readObject();
 				fileIn.close();
@@ -230,7 +251,7 @@ public class Aplikacija {
 
 		public void deserialize() throws IOException, ClassNotFoundException {
 			try {
-				FileInputStream fileIn = new FileInputStream("data/recepti.ser");
+				FileInputStream fileIn = new FileInputStream("data/opreme.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				oprema = (ArrayList<Oprema>) in.readObject();
 				fileIn.close();
