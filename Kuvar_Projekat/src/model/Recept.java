@@ -1,8 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Recept implements Serializable {
 	private Integer sifraRecepata;
@@ -128,6 +131,40 @@ public class Recept implements Serializable {
 		this.namirniceSaSastojanjem.put(n, s);
 	}
 	public Boolean proveraKriterijuma(String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme) {
-		return true;
+		Boolean receptProveren = true;
+		if(!this.naziv.contains(naziv))
+			receptProveren = false;
+		if(kategorije != null)
+		for(Kategorija k:kategorije)
+		    if(!this.kategorije.contains(k)) {
+		    	receptProveren = false;
+		    	break;
+		    }
+		if(namirnice != null) {
+			List<Namirnica> tmp = new ArrayList<>();
+			for(Map.Entry<Namirnica, Sastojanje> entry: this.namirniceSaSastojanjem.entrySet())
+				tmp.add(entry.getKey());
+			for(Namirnica n: namirnice) {
+				if(!tmp.contains(n)) {
+					receptProveren = false;
+					break;
+				}
+			}
+		}
+		if(oprema != null)
+		for(Oprema o:oprema)
+			if(!this.oprema.contains(o)) {
+				receptProveren = false;
+				break;
+			}
+		if(!this.tezina.equals(tezina))
+			receptProveren = false;
+		if(this.vremePripreme > vremePripreme)
+			receptProveren = false;
+		return receptProveren;
+	}
+	@Override
+	public String toString() {
+		return naziv;
 	}
 }

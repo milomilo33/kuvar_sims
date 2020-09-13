@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Komentar {
+public class Komentar implements Serializable{
 	private String tekst;
 	private Date datum;
 	private Korisnik autor;

@@ -35,5 +35,13 @@ public class Kategorija implements Serializable {
 	public void setPotkategorije(List<Kategorija> potkategorije) {
 		this.potkategorije = potkategorije;
 	}
-	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+            return true; 
+		if (!(o instanceof Kategorija))
+            return false; 
+        Kategorija c = (Kategorija) o; 
+        return naziv.equals(c.getNaziv()) && sifraKategorije.equals(c.getSifraKategorije()); 
+	}
 }

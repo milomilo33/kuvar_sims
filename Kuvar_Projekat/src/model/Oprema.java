@@ -29,9 +29,24 @@ public class Oprema implements Serializable {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	@Override
 	public String toString() {
 		return naziv;
 	}
+<<<<<<< Updated upstream
+=======
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+            return true; 
+		if (!(o instanceof Oprema))
+            return false; 
+        Oprema c = (Oprema) o; 
+        return naziv.equals(c.getNaziv()) && sifraOpreme.equals(c.getSifraOpreme()); 
+	}
+>>>>>>> Stashed changes
 }

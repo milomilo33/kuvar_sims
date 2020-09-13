@@ -2,14 +2,20 @@ package model;
 
 import utility.IDGenerator;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
+import event.Observer;
+import event.UpdateEvent;
 
 public class Aplikacija {
 	private Korisnik trenutniKorisnik;
+<<<<<<< Updated upstream
 	private MenadzerKorisnika menadzerKorisnika;
 	private MenadzerRecepata menadzerRecepata;
 	private MenadzerNamirnica menadzerNamirnica;
@@ -36,6 +42,13 @@ public class Aplikacija {
 	}
 
 	private MenadzerKategorija menadzerKategorija;
+=======
+	public MenadzerKorisnika menadzerKorisnika;
+	public MenadzerRecepata menadzerRecepata;
+	public MenadzerNamirnica menadzerNamirnica;
+	public MenadzerOpreme menadzerOpreme;
+	public MenadzerKategorija menadzerKategorija;
+>>>>>>> Stashed changes
 
 	public Aplikacija() throws IOException, ClassNotFoundException {
 		this.trenutniKorisnik = null;
@@ -93,6 +106,9 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
+		public List<Korisnik> getKorisnici(){
+			return korisnici;
+		}
 
 		public boolean dodajNovogKorisnika(String ime, String prezime, Date datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
@@ -106,7 +122,7 @@ public class Aplikacija {
 		}
 	}
 
-	public class MenadzerRecepata {
+	public class MenadzerRecepata implements Publisher {
 		private ArrayList<Recept> recepti;
 
 		public MenadzerRecepata() throws IOException, ClassNotFoundException {
@@ -137,7 +153,9 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-
+		public List<Recept> getRecepti(){
+			return recepti;
+		}
 		public boolean dodajNoviRecept(String naziv, Tezina tezina, String opis,
 									   Float vremePripreme, List<Kategorija> kategorije, List<Namirnica> namirnice, List<Float> kolicine, List<MernaJedinica> merneJedinice, List<Oprema> opreme) {
 
@@ -152,10 +170,32 @@ public class Aplikacija {
 			for (Recept recept : recepti)
 				if (recept.proveraKriterijuma(naziv, kategorije, namirnice, tezina, oprema, vremePripreme))
 					dodajRezultatPretrage(recept, rezultatiPretrage);
+			notifyObservers();
 		}
 
 		public void dodajRezultatPretrage(Recept recept, List<Recept> rezultatiPretrage) {
 			rezultatiPretrage.add(recept);
+		}
+		private List<Observer> observers; 
+			
+		@Override
+		public void addObserver(Observer observer) {
+			if (null == observers)
+				observers = new ArrayList<Observer>();
+			observers.add(observer);
+		}
+		@Override
+		public void removeObserver(Observer observer) {
+			if (null == observers)
+				return;
+			observers.remove(observer);
+		}	
+		@Override
+		public void notifyObservers() {
+			UpdateEvent e = new UpdateEvent(this);
+			for (Observer observer : observers) {
+				observer.updatePerformed(e);
+			}			
 		}
 	}
 
@@ -165,6 +205,7 @@ public class Aplikacija {
 		public MenadzerNamirnica() throws IOException, ClassNotFoundException {
 			this.namirnice = new ArrayList<>();
 			this.deserialize();
+			
 		}
 
 		public void serialize() throws IOException {
@@ -227,6 +268,9 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
+		public List<Kategorija> getKategorije(){
+			return kategorije;
+		}
 	}
 
 	public class MenadzerOpreme {
@@ -259,6 +303,10 @@ public class Aplikacija {
 			} catch (IOException | ClassNotFoundException i) {
 				i.printStackTrace();
 			}
+		}
+		
+		public ArrayList<Oprema> getOprema(){
+			return oprema;
 		}
 	}
 
