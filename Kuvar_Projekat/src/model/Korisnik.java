@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -140,8 +141,19 @@ public class Korisnik implements Serializable {
 	public void setElementiBookmarkovanja(List<ElementBookmarkovanja> elementiBookmarkovanja) {
 		this.elementiBookmarkovanja = elementiBookmarkovanja;
 	}
-	public void pretplatiSe(Korisnik korisnik) {
-		this.jePretplacen.add(korisnik);
+	public boolean pretplatiSe(Korisnik korisnik) {
+		if(this.jePretplacen != null)
+		if(this.jePretplacen.contains(korisnik))
+			return false;
+		else {
+			this.jePretplacen.add(korisnik);
+			return true;
+		}
+		else {
+			this.jePretplacen = new ArrayList<>();
+			this.jePretplacen.add(korisnik);
+			return true;
+		}
 	}
 	
 	public void dodajReceptKorisnika(Recept r) {
@@ -150,5 +162,14 @@ public class Korisnik implements Serializable {
 	
 	public Boolean proveriKorisnika(Korisnik korisnik) {
 		return this.username.equals(korisnik.getUsername());
+	}
+	@Override
+	public String toString() {
+		return username;
+	}
+	@Override
+	public boolean equals(Object o) {
+		Korisnik c = (Korisnik)o;
+		return this.username.equals(c.getUsername());
 	}
 }

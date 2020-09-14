@@ -2,6 +2,7 @@ package utility;
 
 import model.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class DataGenerator {
@@ -25,7 +26,7 @@ public class DataGenerator {
             aplikacija.menadzerOpreme.getOprema().add(new Oprema(IDGenerator.INSTANCE.requestID(), "oprema" + i));
         }
         for (int i = 0; i < 5; i++) {
-            aplikacija.menadzerKorisnika.getKorisnici().add(new Korisnik("pera" + i, "peric" + i, new Date(), "supermario" + i, "super" + i, "tel" + i * i * i, "novi grad" + i));
+            aplikacija.menadzerKorisnika.getKorisnici().add(new Korisnik("pera" + i, "peric" + i, LocalDate.now(), "supermario" + i, "super" + i, "tel" + i * i * i, "novi grad" + i));
         }
         aplikacija.setTrenutniKorisnik(aplikacija.menadzerKorisnika.getKorisnici().get(0));
 

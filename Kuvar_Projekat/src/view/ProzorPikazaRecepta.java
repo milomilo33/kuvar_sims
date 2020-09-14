@@ -6,19 +6,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import controller.KontrolerProzoraKomentarisanjaRecepta;
+import controller.KontrolerProzoraPrikazaRecepta;
+import event.Observer;
+import event.UpdateEvent;
 import model.Aplikacija;
 import model.Recept;
 
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.awt.event.ActionEvent;
 
-public class ProzorPikazaRecepta {
+public class ProzorPikazaRecepta implements Observer{
 
 	private Recept recept;
 	private Aplikacija aplikacija;
+	private AtomicBoolean porukaPretplate = new AtomicBoolean();
+	private KontrolerProzoraPrikazaRecepta kontroler;
 	
 	private JDialog frmRecept;
 	private JTextField textFieldNaziv;
@@ -33,9 +43,11 @@ public class ProzorPikazaRecepta {
 	/**
 	 * Create the application.
 	 */
-	public ProzorPikazaRecepta(Recept recept, Aplikacija aplikacija) {
+	public ProzorPikazaRecepta(Recept recept, Aplikacija aplikacija, KontrolerProzoraPrikazaRecepta kontroler) {
 		this.recept = recept;
 		this.aplikacija = aplikacija;
+		this.kontroler = kontroler;
+		this.aplikacija.menadzerKorisnika.addObserver(this);
 		initialize();
 		frmRecept.setVisible(true);
 	}
@@ -88,21 +100,21 @@ public class ProzorPikazaRecepta {
 		scrollPaneNamirnice.setBounds(10, 125, 231, 159);
 		frmRecept.getContentPane().add(scrollPaneNamirnice);
 		
-		JList listNamirnice = new JList();
+		JList listNamirnice = new JList(this.recept.getNamirniceSaSastojanjem().keySet().toArray());
 		scrollPaneNamirnice.setViewportView(listNamirnice);
 		
 		JScrollPane scrollPaneOprema = new JScrollPane();
 		scrollPaneOprema.setBounds(278, 125, 241, 159);
 		frmRecept.getContentPane().add(scrollPaneOprema);
 		
-		JList listOprema = new JList();
+		JList listOprema = new JList(this.recept.getOprema().toArray());
 		scrollPaneOprema.setViewportView(listOprema);
 		
 		JScrollPane scrollPaneKategorije = new JScrollPane();
 		scrollPaneKategorije.setBounds(555, 125, 224, 159);
 		frmRecept.getContentPane().add(scrollPaneKategorije);
 		
-		JList listKategorije = new JList();
+		JList listKategorije = new JList(this.recept.getKategorije().toArray());
 		scrollPaneKategorije.setViewportView(listKategorije);
 		
 		JLabel lblPotrebneNamirnice = new JLabel("Potrebne namirnice:");
@@ -139,15 +151,38 @@ public class ProzorPikazaRecepta {
 		frmRecept.getContentPane().add(lblAutor);
 		
 		JButton btnKomentarisi = new JButton("Komentarisi");
+		btnKomentarisi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { // otvara prozor za komentarisanje
+				System.out.println(recept.getKomentari());
+				ProzorKomentarisanjaRecepta prozorKomentarisanjeRecepta = new ProzorKomentarisanjaRecepta(aplikacija, recept, new KontrolerProzoraKomentarisanjaRecepta(aplikacija));
+			}
+		});
 		btnKomentarisi.setBounds(576, 328, 181, 23);
 		frmRecept.getContentPane().add(btnKomentarisi);
 		
 		JButton btnPretplatiSe = new JButton("Pretplati se");
+		btnPretplatiSe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				kontroler.pretplatiSe(recept.getAutor(), porukaPretplate);
+			}
+		});
 		btnPretplatiSe.setBounds(576, 378, 181, 23);
 		frmRecept.getContentPane().add(btnPretplatiSe);
 		
 		JButton btnNewButton = new JButton("Potvrdi");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmRecept.dispose();
+			}
+		});
 		btnNewButton.setBounds(576, 431, 181, 23);
 		frmRecept.getContentPane().add(btnNewButton);
+	}
+	public void updatePerformed(UpdateEvent e) {
+		if(porukaPretplate!=null)
+			if(porukaPretplate.get())
+				JOptionPane.showMessageDialog(null, "Pretplata kuvaru " + this.recept.getAutor() + "izvrsena!");
+			else
+				JOptionPane.showMessageDialog(null, "Vec ste pretplaceni kuvaru " + this.recept.getAutor() + "!\nPretplata neuspesna!");
 	}
 }

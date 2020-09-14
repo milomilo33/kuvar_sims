@@ -5,10 +5,12 @@ import event.UpdateEvent;
 import utility.IDGenerator;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Aplikacija {
 
@@ -67,7 +69,7 @@ public class Aplikacija {
 		this.trenutniKorisnik = trenutniKorisnik;
 	}
 
-	public class MenadzerKorisnika {
+	public class MenadzerKorisnika implements Publisher {
 		private ArrayList<Korisnik> korisnici;
 
 		public MenadzerKorisnika() throws IOException, ClassNotFoundException {
@@ -102,7 +104,7 @@ public class Aplikacija {
 			return korisnici;
 		}
 
-		public boolean dodajNovogKorisnika(String ime, String prezime, Date datumRodjenja, String username, String password,
+		public boolean dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
 			Korisnik noviKorisnik = new Korisnik(ime, prezime, datumRodjenja, username, password, brojTelefona, adresa);
 			for (Korisnik korisnik : korisnici) {
@@ -111,6 +113,37 @@ public class Aplikacija {
 			korisnici.add(noviKorisnik);
 			return true;
 
+		}
+		
+		public void pretplatiSe(Korisnik k, AtomicBoolean retVal) {
+			retVal.set(trenutniKorisnik.pretplatiSe(k));
+			notifyObservers();
+		}
+		
+		private List<Observer> observers;
+		
+		@Override
+		public void addObserver(Observer observer) {
+			if (null == observers)
+				observers = new ArrayList<Observer>();
+			else
+				observers.clear();
+			observers.add(observer);
+		}
+
+		@Override
+		public void removeObserver(Observer observer) {
+			if (null == observers)
+				return;
+			observers.remove(observer);
+		}
+
+		@Override
+		public void notifyObservers() {
+			UpdateEvent e = new UpdateEvent(this);
+			for (Observer observer : observers) {
+				observer.updatePerformed(e);
+			}
 		}
 	}
 
@@ -144,6 +177,13 @@ public class Aplikacija {
 			} catch (IOException | ClassNotFoundException i) {
 				i.printStackTrace();
 			}
+		}
+		
+		public void dodajKomentar(String tekst, Date datum, Korisnik autor ,Integer ocena, Recept r, StringBuilder srOcena) {
+			r.dodajKomentar(tekst, datum, autor, ocena);
+			srOcena.delete(0, srOcena.length());
+			srOcena.append(r.getSrednjaOcena().toString());
+			notifyObservers();
 		}
 
 		private List<Observer> observers;

@@ -23,5 +23,7 @@ public class KnjigaRecepata {
 	public void setSekcijeRecepti(Map<String, List<Recept>> sekcijeRecepti) {
 		this.sekcijeRecepti = sekcijeRecepti;
 	}
-	
+	public List<Recept> getReceptiSekcije(String sekcija){
+		return sekcijeRecepti.get(sekcija);
+	}
 }

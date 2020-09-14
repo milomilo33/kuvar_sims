@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,7 +89,7 @@ public class Recept implements Serializable {
 		Integer suma = 0;
 		for (Komentar k : this.komentari)
 			suma += k.getOcena();
-		return (float) (suma / this.komentari.size());
+		return (float)suma / (float)this.komentari.size();
 	}
 
 	public Korisnik getAutor() {
@@ -124,8 +125,11 @@ public class Recept implements Serializable {
 		this.komentari = komentari;
 	}
 
-	public void dodajKomentar(Komentar komentar) {
-		this.komentari.add(komentar);
+	public void dodajKomentar(String tekst, Date datum, Korisnik autor ,Integer ocena) {
+		Komentar komentar = new Komentar(tekst, datum, autor, ocena);
+		if(this.komentari==null)
+			this.komentari = new ArrayList<>();
+		komentari.add(komentar);
 	}
 	public void dodajNamirnicuSaSastojanjem(Namirnica n, Sastojanje s) {
 		this.namirniceSaSastojanjem.put(n, s);

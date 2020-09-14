@@ -3,6 +3,7 @@ package view;
 import controller.KontrolerGlavnogProzora;
 import controller.KontrolerProzorIzmeneKategorija;
 import controller.KontrolerProzoraDodavanjaRecepta;
+import controller.KontrolerProzoraPrikazaRecepta;
 import event.Observer;
 import event.UpdateEvent;
 import model.*;
@@ -107,7 +108,9 @@ public class GlavniProzor extends JFrame implements Observer{
 
 		mnDodavanje.add(mntmDodajOpremu);
 
-		mnDodavanje.add(mntmDodajKnjiguRecepata);
+		mnDodavanje.add(mntmDodajKnjiguRecepata).addActionListener(e -> {
+			ProzorDodavanjaKnjigeRecepata prozorDodavanjaKnjigeRecepata = new ProzorDodavanjaKnjigeRecepata(aplikacija, null);
+		});
 
 		mnDodavanje.add(mntmDodajKategoriju);
 		mntmDodajKategoriju.addActionListener(e -> {
@@ -125,6 +128,9 @@ public class GlavniProzor extends JFrame implements Observer{
 		mnPregled.add(mntmLicniRecepti);
 
 		mnPregled.add(mntmPregledPretplacenih);
+		mntmPregledPretplacenih.addActionListener(e -> {// prikaz liste pretplacenih
+			ProzorPregledaPretplacenih prozorPregledaPretplacenih = new ProzorPregledaPretplacenih(aplikacija);
+		});
 
 		mnPregled.add(mntmProfil);
 		contentPane = new JPanel();
@@ -185,19 +191,6 @@ public class GlavniProzor extends JFrame implements Observer{
 								.addComponent(btnUkloniFiltere, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
 								.addGap(42))
 		);
-
-		//pritisnuto dugme namirnice, otvara prozor za izbor namirnica
-		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
-			public void actionPerformed(ActionEvent e) {
-				ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica(kriterijumPretrageNamirnice, aplikacija, filterNamirnice);
-			}
-		});
-		btnOprema.addActionListener(new ActionListener() {  //pritisnuto dugme opreme, otvara prozor za izbor opreme
-			public void actionPerformed(ActionEvent e) {
-				ProzorIzboraOpreme prozor = new ProzorIzboraOpreme(kriterijumPretrageOprema, aplikacija, filterOprema);
-			}
-		});
-
 		gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
@@ -240,7 +233,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		        if (e.getClickCount() == 2) {
 		            // Double-click detected
 		            int index = list.locationToIndex(e.getPoint());
-		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazaniRecepti.getElementAt(index), aplikacija);
+		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazaniRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
 		        }
 			}
 		});
