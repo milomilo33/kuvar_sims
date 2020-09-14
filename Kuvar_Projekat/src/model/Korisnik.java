@@ -21,6 +21,7 @@ public class Korisnik implements Serializable {
 	private Map<Namirnica, Posedovanje> namirnice;
 	private List<Oprema> oprema;
 	private List<KnjigaRecepata> knjigeRecepata;
+	private List<ElementBookmarkovanja> elementiBookmarkovanja;
 	
 	public Korisnik() {}
 	public Korisnik(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
@@ -133,6 +134,12 @@ public class Korisnik implements Serializable {
 		this.knjigeRecepata = knjigeRecepata;
 	}
 	
+	public List<ElementBookmarkovanja> getElementiBookmarkovanja() {
+		return elementiBookmarkovanja;
+	}
+	public void setElementiBookmarkovanja(List<ElementBookmarkovanja> elementiBookmarkovanja) {
+		this.elementiBookmarkovanja = elementiBookmarkovanja;
+	}
 	public void pretplatiSe(Korisnik korisnik) {
 		this.jePretplacen.add(korisnik);
 	}
