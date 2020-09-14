@@ -1,14 +1,16 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public class Korisnik implements Serializable {
 	private String ime;
 	private String prezime;
-	private Date datumRodjenja;
+	private LocalDate datumRodjenja;
 	private String username;
 	private String password;
 	private String brojTelefona;
@@ -21,7 +23,7 @@ public class Korisnik implements Serializable {
 	private List<KnjigaRecepata> knjigeRecepata;
 	
 	public Korisnik() {}
-	public Korisnik(String ime, String prezime, Date datumRodjenja, String username, String password,
+	public Korisnik(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 			String brojTelefona, String adresa, Uloga uloga, List<Korisnik> jePretplacen, List<Recept> recepti, Map<Namirnica, Posedovanje> namirnice, List<Oprema> oprema, List<KnjigaRecepata> knjigeRecepata) {
 		this.ime = ime;
 		this.prezime = prezime;
@@ -38,7 +40,7 @@ public class Korisnik implements Serializable {
 		this.knjigeRecepata = knjigeRecepata;
 	}
 
-	public Korisnik(String ime, String prezime, Date datumRodjenja, String username, String password, String brojTelefona, String adresa) {
+	public Korisnik(String ime, String prezime, LocalDate datumRodjenja, String username, String password, String brojTelefona, String adresa) {
 		this.ime = ime;
 		this.prezime = prezime;
 		this.datumRodjenja = datumRodjenja;
@@ -63,10 +65,10 @@ public class Korisnik implements Serializable {
 	public void setPrezime(String prezime) {
 		this.prezime = prezime;
 	}
-	public Date getDatumRodjenja() {
+	public LocalDate getDatumRodjenja() {
 		return datumRodjenja;
 	}
-	public void setDatumRodjenja(Date datumRodjenja) {
+	public void setDatumRodjenja(LocalDate datumRodjenja) {
 		this.datumRodjenja = datumRodjenja;
 	}
 	public String getUsername() {
