@@ -5,6 +5,7 @@ import event.UpdateEvent;
 import utility.IDGenerator;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,8 +68,10 @@ public class Aplikacija {
 		this.trenutniKorisnik = trenutniKorisnik;
 	}
 
-	public class MenadzerKorisnika {
+	public class MenadzerKorisnika implements Publisher{
 		private ArrayList<Korisnik> korisnici;
+		
+		private List<Observer> observers;
 
 		public MenadzerKorisnika() throws IOException, ClassNotFoundException {
 			this.korisnici = new ArrayList<>();
@@ -98,19 +101,48 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
+		
 		public List<Korisnik> getKorisnici(){
 			return korisnici;
 		}
 
-		public boolean dodajNovogKorisnika(String ime, String prezime, Date datumRodjenja, String username, String password,
+		@Override
+		public void addObserver(Observer observer) {
+			if (null == observers)
+				observers = new ArrayList<Observer>();
+			observers.add(observer);
+		}
+
+		@Override
+		public void removeObserver(Observer observer) {
+			if (null == observers)
+				return;
+			observers.remove(observer);
+		}
+
+		private Boolean uspesnoRegistrovan;
+		
+		@Override
+		public void notifyObservers() {
+			UpdateEvent e = new UpdateEvent(uspesnoRegistrovan);
+			for (Observer observer : observers) {
+				observer.updatePerformed(e);
+			}
+		}
+		
+		public void dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
 			Korisnik noviKorisnik = new Korisnik(ime, prezime, datumRodjenja, username, password, brojTelefona, adresa);
+			uspesnoRegistrovan = true;
 			for (Korisnik korisnik : korisnici) {
-				if (korisnik.proveriKorisnika(noviKorisnik)) return false;
+				if (korisnik.proveriKorisnika(noviKorisnik)) {
+					uspesnoRegistrovan = false;
+					break;
+				}
 			}
-			korisnici.add(noviKorisnik);
-			return true;
-
+			if (uspesnoRegistrovan)
+				korisnici.add(noviKorisnik);
+			notifyObservers();
 		}
 	}
 
