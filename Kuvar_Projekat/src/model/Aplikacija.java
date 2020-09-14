@@ -69,7 +69,7 @@ public class Aplikacija {
 		this.trenutniKorisnik = trenutniKorisnik;
 	}
 
-	public class MenadzerKorisnika implements Publisher {
+	public class MenadzerKorisnika implements Publisher{
 		private ArrayList<Korisnik> korisnici;
 
 		public MenadzerKorisnika() throws IOException, ClassNotFoundException {
@@ -100,19 +100,50 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
+		
 		public List<Korisnik> getKorisnici(){
 			return korisnici;
 		}
 
-		public boolean dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
+		private Boolean uspesnoRegistrovan;
+		
+		public Boolean getUspesnoRegistrovan() {
+			return uspesnoRegistrovan;
+		}
+		
+		public void dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
 			Korisnik noviKorisnik = new Korisnik(ime, prezime, datumRodjenja, username, password, brojTelefona, adresa);
+			uspesnoRegistrovan = true;
 			for (Korisnik korisnik : korisnici) {
-				if (korisnik.proveriKorisnika(noviKorisnik)) return false;
+				if (korisnik.proveriKorisnika(noviKorisnik)) {
+					uspesnoRegistrovan = false;
+					break;
+				}
 			}
-			korisnici.add(noviKorisnik);
-			return true;
-
+			if (uspesnoRegistrovan)
+				korisnici.add(noviKorisnik);
+			notifyObservers();
+		}
+		
+		/*private Korisnik uspesnoPrijavljenKorisnik;
+		
+		public Korisnik getUspesnoPrijavljenKorisnik() {
+			return uspesnoPrijavljenKorisnik;
+		}*/
+		
+		public void prijaviKorisnika(String username, String password) throws IllegalArgumentException {
+			for (Korisnik korisnik : korisnici)
+				if (korisnik.getUsername().equals(username)) {
+					if (korisnik.getPassword().equals(password)) {
+						trenutniKorisnik = korisnik;
+						notifyObservers();
+						return;
+					}
+					else
+						throw new IllegalArgumentException("Uneli ste pogresnu sifru!");
+				}
+			throw new IllegalArgumentException("Uneseno korisnicko ime ne postoji!");
 		}
 		
 		public void pretplatiSe(Korisnik k, AtomicBoolean retVal) {
