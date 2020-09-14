@@ -3,11 +3,8 @@ package view;
 import model.Aplikacija;
 import model.MernaJedinica;
 import model.Namirnica;
-import model.Oprema;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -19,21 +16,27 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
     private JTextField txKolicina;
     private String[] merneJedinice = {"mg", "g", "kg"};
     private ArrayList<DodatiSastojci> dodatiSastojci;
-    private Vector<Oprema> oprema;
     private Vector<Namirnica> sveNamirnice;
-    private DefaultListModel dodateModel;
+    private MyListModel dodateModel;
+    private ArrayList<Namirnica> dodateNamirnice;
+    private ArrayList<MernaJedinica> dodateMerneJedinice;
+    private ArrayList<Float> dodateKolicine;
+    private ProzorDodavanjaRecepta parent;
 
     /**
      * Create the application.
      */
-    public ProzorIzboraNamirnicaDodavanjeRecepta(Aplikacija aplikacija, ArrayList<Namirnica> dodateNamirnice,
-                                                 ArrayList<MernaJedinica> dodateMerneJedinice, ArrayList<Float> dodateKolicine, ArrayList<Oprema> oprema) {
+    public ProzorIzboraNamirnicaDodavanjeRecepta(ProzorDodavanjaRecepta parent, Aplikacija aplikacija, ArrayList<Namirnica> dodateNamirnice,
+                                                 ArrayList<MernaJedinica> dodateMerneJedinice, ArrayList<Float> dodateKolicine) {
         dodatiSastojci = new ArrayList<>();
         for (int i = 0; i < dodateNamirnice.size(); ++i)
             dodatiSastojci.add(new DodatiSastojci(dodateNamirnice.get(i), dodateMerneJedinice.get(i), dodateKolicine.get(i)));
-        this.oprema = new Vector<>(oprema);
         this.aplikacija = aplikacija;
         this.sveNamirnice = new Vector<>(this.aplikacija.getMenadzerNamirnica().getNamirnice());
+        this.dodateNamirnice = dodateNamirnice;
+        this.dodateMerneJedinice = dodateMerneJedinice;
+        this.dodateKolicine = dodateKolicine;
+        this.parent = parent;
         initialize();
     }
 
@@ -75,8 +78,7 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
         scrollPane_1.setBounds(10, 226, 745, 171);
         frame.getContentPane().add(scrollPane_1);
 
-        dodateModel = new DefaultListModel();
-        for (DodatiSastojci ds : dodatiSastojci) dodateModel.addElement(ds);
+        dodateModel = new MyListModel(dodatiSastojci);
 
         JList listDodateNamirnice = new JList();
         listDodateNamirnice.setModel(dodateModel);
@@ -85,32 +87,47 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
         JButton btnDodaj = new JButton("Dodaj");
         btnDodaj.setBounds(384, 404, 89, 23);
         frame.getContentPane().add(btnDodaj);
-        btnDodaj.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!txKolicina.getText().matches("[0-9]*.?[0-9]+")) {
-                    JOptionPane.showMessageDialog(null, "Neispravan unos za kolicinu");
-                    return;
-                }
-                if (listSveNamirnice.getSelectedValue() == null) {
-                    JOptionPane.showMessageDialog(null, "Namirnica nije izabrana");
-                }
-                MernaJedinica mj = MernaJedinica.G;
-                if (cmbMernaJedinica.getSelectedItem().equals("mg")) mj = MernaJedinica.MG;
-                if (cmbMernaJedinica.getSelectedItem().equals("kg")) mj = MernaJedinica.KG;
-                dodatiSastojci.add(new DodatiSastojci((Namirnica) listSveNamirnice.getSelectedValue(), mj,
-                        Float.valueOf(txKolicina.getText())));
-                dodateModel.addElement(dodatiSastojci.get(dodatiSastojci.size() - 1));
+        btnDodaj.addActionListener(e -> {
+            if (!txKolicina.getText().matches("[0-9]*.?[0-9]+")) {
+                JOptionPane.showMessageDialog(null, "Neispravan unos za kolicinu");
+                return;
             }
+            if (listSveNamirnice.getSelectedValue() == null) {
+                JOptionPane.showMessageDialog(null, "Namirnica nije izabrana");
+            }
+            MernaJedinica mj = MernaJedinica.G;
+            if (cmbMernaJedinica.getSelectedItem().equals("mg")) mj = MernaJedinica.MG;
+            if (cmbMernaJedinica.getSelectedItem().equals("kg")) mj = MernaJedinica.KG;
+            if (!dodateModel.addElement(new DodatiSastojci((Namirnica) listSveNamirnice.getSelectedValue(), mj,
+                    Float.valueOf(txKolicina.getText()))))
+                JOptionPane.showMessageDialog(null, "Namirnica je vec u listi dodatih namirnica");
+
         });
 
         JButton btnKraj = new JButton("Zavrsi Dodavanje");
         btnKraj.setBounds(599, 404, 156, 23);
         frame.getContentPane().add(btnKraj);
+        btnKraj.addActionListener(e -> {
+            this.dodateKolicine.clear();
+            this.dodateMerneJedinice.clear();
+            this.dodateNamirnice.clear();
+            for (DodatiSastojci ds : dodatiSastojci) {
+                this.dodateNamirnice.add(ds.dodataNamirnica);
+                this.dodateMerneJedinice.add(ds.dodataMernaJedinica);
+                this.dodateKolicine.add(ds.dodataKolicina);
+            }
+            parent.osveziNamirnice();
+            frame.dispose();
+
+        });
 
         JButton btnUkloni = new JButton("Ukloni");
         btnUkloni.setBounds(493, 404, 89, 23);
         frame.getContentPane().add(btnUkloni);
+        btnUkloni.addActionListener(e -> {
+            if (listDodateNamirnice.getSelectedValue() != null)
+                dodateModel.removeElement((DodatiSastojci) listDodateNamirnice.getSelectedValue());
+        });
 
         JLabel lblNewLabel_2 = new JLabel("Dodate namirnice");
         lblNewLabel_2.setBounds(10, 208, 233, 14);
@@ -118,6 +135,40 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
 
         frame.setModal(true);
         frame.setVisible(true);
+    }
+
+    class MyListModel extends AbstractListModel {
+        private ArrayList<DodatiSastojci> dodatiSastojci;
+
+
+        public MyListModel(ArrayList<DodatiSastojci> dodatiSastojci) {
+            this.dodatiSastojci = dodatiSastojci;
+        }
+
+        public boolean removeElement(DodatiSastojci ds) {
+            if (!this.dodatiSastojci.remove(ds)) return false;
+            this.fireContentsChanged(this, 0, getSize());
+            return true;
+        }
+
+        public boolean addElement(DodatiSastojci ds) {
+            for (DodatiSastojci item : dodatiSastojci)
+                if (item.dodataNamirnica.getSifraNamirnice().equals(ds.dodataNamirnica.getSifraNamirnice()))
+                    return false;
+            this.dodatiSastojci.add(ds);
+            this.fireContentsChanged(this, 0, getSize());
+            return true;
+        }
+
+        @Override
+        public int getSize() {
+            return dodatiSastojci.size();
+        }
+
+        @Override
+        public Object getElementAt(int index) {
+            return dodatiSastojci.get(index);
+        }
     }
 
     class DodatiSastojci {

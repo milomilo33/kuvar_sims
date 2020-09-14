@@ -1,6 +1,7 @@
 package view;
 
 import controller.KontrolerGlavnogProzora;
+import controller.KontrolerProzorIzmeneKategorija;
 import controller.KontrolerProzoraDodavanjaRecepta;
 import event.Observer;
 import event.UpdateEvent;
@@ -17,42 +18,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< Updated upstream
-=======
-import javax.swing.AbstractListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-
-import model.Aplikacija;
-import model.Kategorija;
-import model.Namirnica;
-import model.Oprema;
-import model.Recept;
-import model.Tezina;
-import controller.KontrolerGlavnogProzora;
-import event.Observer;
-import event.UpdateEvent;
-import javax.swing.SwingConstants;
-
->>>>>>> Stashed changes
 public class GlavniProzor extends JFrame implements Observer{
 
 	private Aplikacija aplikacija;
@@ -131,7 +97,7 @@ public class GlavniProzor extends JFrame implements Observer{
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
 	private void initGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 861, 660);
 
 		setJMenuBar(menuBar);
@@ -139,11 +105,8 @@ public class GlavniProzor extends JFrame implements Observer{
 		menuBar.add(mnDodavanje);
 
 		mnDodavanje.add(mntmDodajRecept);
-		mntmDodajRecept.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ProzorDodavanjaRecepta prozorDodavanjaRecepta = new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija));
-			}
+		mntmDodajRecept.addActionListener(e -> {
+			ProzorDodavanjaRecepta prozorDodavanjaRecepta = new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija));
 		});
 
 		mnDodavanje.add(mntmDodajNamirnice);
@@ -153,35 +116,36 @@ public class GlavniProzor extends JFrame implements Observer{
 		mnDodavanje.add(mntmDodajKnjiguRecepata);
 
 		mnDodavanje.add(mntmDodajKategoriju);
+		mntmDodajKategoriju.addActionListener(e -> {
+			ProzorIzmeneKategorija prozorIzmeneKategorija = new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija));
+		});
 
 		menuBar.add(mnPregled);
-		
+
 		mnPregled.add(mntmNajpopularnijiRecepti);
-		
+
 		mnPregled.add(mntmBookmarkovi);
-		
+
 		mnPregled.add(mntmKnjigeRecepata);
-		
+
 		mnPregled.add(mntmLicniRecepti);
-		
+
 		mnPregled.add(mntmPregledPretplacenih);
-		
+
 		mnPregled.add(mntmProfil);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		btnPrijava.setBounds(41, 9, 102, 23);
-		btnPrijava.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
+		btnPrijava.addActionListener(arg0 -> {
 		});
-		
+
 		textFieldVremePripreme = new JTextField();
 		textFieldVremePripreme.setToolTipText("vreme pripreme");
 		textFieldVremePripreme.setColumns(10);
-		
+
 		JLabel lblUnesiVremePripreme = new JLabel("Unesi vreme pripreme:");
-		
+
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(Tezina.values()));
 		
@@ -200,70 +164,68 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(34)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblUnesiVremePripreme)
-						.addComponent(lblIzaberiTezinuRecepta))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboBox, 0, 97, Short.MAX_VALUE)
-						.addComponent(textFieldVremePripreme, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
-					.addContainerGap())
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(79, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnNamirnice, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnOprema, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnKategorije, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-					.addGap(59))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(97, Short.MAX_VALUE)
-					.addComponent(lblKriterijumi, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-					.addGap(73))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(52, Short.MAX_VALUE)
-					.addComponent(btnUkloniFiltere, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-					.addGap(42))
+				gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panel.createSequentialGroup()
+								.addGap(34)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblUnesiVremePripreme)
+										.addComponent(lblIzaberiTezinuRecepta))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(comboBox, 0, 97, Short.MAX_VALUE)
+										.addComponent(textFieldVremePripreme, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+								.addContainerGap())
+						.addGroup(gl_panel.createSequentialGroup()
+								.addContainerGap(79, Short.MAX_VALUE)
+								.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(btnNamirnice, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnOprema, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnKategorije, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+								.addGap(59))
+						.addGroup(gl_panel.createSequentialGroup()
+								.addContainerGap(97, Short.MAX_VALUE)
+								.addComponent(lblKriterijumi, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+								.addGap(73))
+						.addGroup(gl_panel.createSequentialGroup()
+								.addContainerGap(52, Short.MAX_VALUE)
+								.addComponent(btnUkloniFiltere, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+								.addGap(42))
 		);
-<<<<<<< Updated upstream
+
+		//pritisnuto dugme namirnice, otvara prozor za izbor namirnica
 		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
 			public void actionPerformed(ActionEvent e) {
-				kriterijumPretrageNamirnice.add(new Namirnica());
-				ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica(kriterijumPretrageNamirnice);
-
+				ProzorIzboraNamirnica prozor = new ProzorIzboraNamirnica(kriterijumPretrageNamirnice, aplikacija, filterNamirnice);
 			}
 		});
 		btnOprema.addActionListener(new ActionListener() {  //pritisnuto dugme opreme, otvara prozor za izbor opreme
 			public void actionPerformed(ActionEvent e) {
-				ProzorIzboraOpreme.main(null);
+				ProzorIzboraOpreme prozor = new ProzorIzboraOpreme(kriterijumPretrageOprema, aplikacija, filterOprema);
 			}
 		});
-=======
->>>>>>> Stashed changes
+
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(36)
-					.addComponent(lblKriterijumi)
-					.addGap(37)
-					.addComponent(btnNamirnice)
-					.addGap(18)
-					.addComponent(btnKategorije)
-					.addGap(18)
-					.addComponent(btnOprema)
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblUnesiVremePripreme)
-						.addComponent(textFieldVremePripreme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(17)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblIzaberiTezinuRecepta)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(151)
-					.addComponent(btnUkloniFiltere)
-					.addContainerGap(41, Short.MAX_VALUE))
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+								.addGap(36)
+								.addComponent(lblKriterijumi)
+								.addGap(37)
+								.addComponent(btnNamirnice)
+								.addGap(18)
+								.addComponent(btnKategorije)
+								.addGap(18)
+								.addComponent(btnOprema)
+								.addGap(18)
+								.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblUnesiVremePripreme)
+										.addComponent(textFieldVremePripreme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(17)
+								.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblIzaberiTezinuRecepta)
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(151)
+								.addComponent(btnUkloniFiltere)
+								.addContainerGap(41, Short.MAX_VALUE))
 		);
 		btnNamirnice.addActionListener(new ActionListener() { //pritisnuto dugme namirnice, otvara prozor za izbor namirnica
 			public void actionPerformed(ActionEvent e) {

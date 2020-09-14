@@ -1,14 +1,9 @@
 package view;
 
 import controller.KontrolerProzoraDodavanjaRecepta;
-import model.Aplikacija;
-import model.MernaJedinica;
-import model.Namirnica;
-import model.Oprema;
+import model.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ProzorDodavanjaRecepta {
@@ -23,24 +18,39 @@ public class ProzorDodavanjaRecepta {
     private ArrayList<Namirnica> namirnice;
     private ArrayList<MernaJedinica> merneJedinice;
     private ArrayList<Float> kolicine;
-    private ArrayList<Float> vremenaPripreme;
     private ArrayList<Oprema> oprema;
     private Aplikacija aplikacija;
     private KontrolerProzoraDodavanjaRecepta kontroler;
+    private MyListModelNamirnice modelNamirnice;
+    private MyListModelOprema modelOprema;
+    private ArrayList<Kategorija> kategorije;
+    private JTextPane txKategorije;
 
 
-    /**
-     * Create the application.
-     */
     public ProzorDodavanjaRecepta(Aplikacija aplikacija, KontrolerProzoraDodavanjaRecepta kontroler) {
         namirnice = new ArrayList<>();
         oprema = new ArrayList<>();
         merneJedinice = new ArrayList<>();
-        oprema = new ArrayList<>();
         kolicine = new ArrayList<>();
+        kategorije = new ArrayList<>();
         this.aplikacija = aplikacija;
         this.kontroler = kontroler;
         initialize();
+    }
+
+    public void osveziNamirnice() {
+        modelNamirnice.osvezi();
+    }
+
+    public void osveziOpremu() {
+        modelOprema.osvezi();
+    }
+
+    public void osveziKategorije(ArrayList<Kategorija> kategorije) {
+        this.kategorije = new ArrayList<>(kategorije);
+        StringBuilder s = new StringBuilder();
+        for (Kategorija k : this.kategorije) s.append(" ").append(k.toString()).append(";");
+        txKategorije.setText(String.valueOf(s));
     }
 
     /**
@@ -93,41 +103,108 @@ public class ProzorDodavanjaRecepta {
         scrollPane.setBounds(169, 105, 313, 150);
         frmDodavanjeRecepta.getContentPane().add(scrollPane);
 
+        modelNamirnice = new MyListModelNamirnice(this.namirnice, this.merneJedinice, this.kolicine);
         JList listNaminica = new JList();
+        listNaminica.setModel(modelNamirnice);
         scrollPane.setViewportView(listNaminica);
 
-        JButton btnNamirnica = new JButton("Dodaj Namirnicu");
+        JButton btnNamirnica = new JButton("Izmeni Namirnice");
         btnNamirnica.setBounds(28, 167, 134, 23);
         frmDodavanjeRecepta.getContentPane().add(btnNamirnica);
-
-        btnNamirnica.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija,
-                        namirnice, merneJedinice, kolicine, oprema);
-
-            }
+        btnNamirnica.addActionListener(e -> {
+            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(this, aplikacija,
+                    namirnice, merneJedinice, kolicine);
         });
 
         JScrollPane scrollPane_1 = new JScrollPane();
         scrollPane_1.setBounds(492, 105, 313, 150);
         frmDodavanjeRecepta.getContentPane().add(scrollPane_1);
 
-        JList listOprema = new JList();
+        modelOprema = new MyListModelOprema(oprema);
+        JList listOprema = new JList(modelOprema);
         scrollPane_1.setViewportView(listOprema);
 
-        JButton btnDodajOpremu = new JButton("Dodaj Opremu");
-        btnDodajOpremu.setBounds(815, 167, 120, 23);
-        frmDodavanjeRecepta.getContentPane().add(btnDodajOpremu);
+        JButton btnOprema = new JButton("Izmeni Opremu");
+        btnOprema.setBounds(815, 167, 120, 23);
+        frmDodavanjeRecepta.getContentPane().add(btnOprema);
+        btnOprema.addActionListener(e -> {
+            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(this, aplikacija, oprema);
+        });
 
         JButton btnOK = new JButton("Napravi Recept");
         btnOK.setBounds(815, 642, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOK);
+        btnOK.addActionListener(e -> {
+            kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
+        });
 
         JButton btnOdustanak = new JButton("Odustanak");
         btnOdustanak.setBounds(25, 642, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOdustanak);
+        btnOdustanak.addActionListener(e -> frmDodavanjeRecepta.dispose());
+
+        JButton btnKategorije = new JButton("Kategorije");
+        btnKategorije.setBounds(169, 642, 105, 23);
+        frmDodavanjeRecepta.getContentPane().add(btnKategorije);
+        btnKategorije.addActionListener(e -> {
+            ProzorIzboraKategorijeDodavanjeRecepta prozor = new ProzorIzboraKategorijeDodavanjeRecepta(this, aplikacija, this.kategorije);
+        });
+
+        txKategorije = new JTextPane();
+        txKategorije.setEditable(false);
+        txKategorije.setBounds(278, 645, 527, 20);
+        frmDodavanjeRecepta.getContentPane().add(txKategorije);
+        btnOdustanak.addActionListener(e -> frmDodavanjeRecepta.dispose());
 
         frmDodavanjeRecepta.setVisible(true);
+    }
+
+    class MyListModelNamirnice extends AbstractListModel {
+        private ArrayList<Namirnica> namirnice;
+        private ArrayList<MernaJedinica> merneJedinice;
+        private ArrayList<Float> kolicine;
+
+        public MyListModelNamirnice(ArrayList<Namirnica> namirnice, ArrayList<MernaJedinica> merneJedinice, ArrayList<Float> kolicine) {
+            this.namirnice = namirnice;
+            this.merneJedinice = merneJedinice;
+            this.kolicine = kolicine;
+        }
+
+        public void osvezi() {
+            this.fireContentsChanged(this, 0, getSize());
+        }
+
+
+        @Override
+        public int getSize() {
+            return namirnice.size();
+        }
+
+        @Override
+        public Object getElementAt(int index) {
+            return namirnice.get(index).getNaziv() + " " + merneJedinice.get(index) + " " + kolicine.get(index);
+        }
+    }
+
+    class MyListModelOprema extends AbstractListModel {
+        private ArrayList<Oprema> opremas;
+
+        public MyListModelOprema(ArrayList<Oprema> opremas) {
+            this.opremas = opremas;
+        }
+
+        public void osvezi() {
+            this.fireContentsChanged(this, 0, getSize());
+        }
+
+        @Override
+        public int getSize() {
+            return opremas.size();
+        }
+
+        @Override
+        public Object getElementAt(int index) {
+            return opremas.get(index);
+        }
     }
 }

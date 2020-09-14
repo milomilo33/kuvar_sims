@@ -1,17 +1,14 @@
 package model;
 
+import event.Observer;
+import event.UpdateEvent;
 import utility.IDGenerator;
-
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-
-import event.Observer;
-import event.UpdateEvent;
 
 public class Aplikacija {
 	private Korisnik trenutniKorisnik;
@@ -153,17 +150,11 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		public List<Recept> getRecepti(){
-			return recepti;
-		}
-		public boolean dodajNoviRecept(String naziv, Tezina tezina, String opis,
-									   Float vremePripreme, List<Kategorija> kategorije, List<Namirnica> namirnice, List<Float> kolicine, List<MernaJedinica> merneJedinice, List<Oprema> opreme) {
 
-			HashMap<Namirnica, Sastojanje> namirnicaSastojanje = new HashMap<>();
-			for (int i = 0; i < namirnice.size(); ++i)
-				namirnicaSastojanje.put(namirnice.get(i), new Sastojanje(kolicine.get(i), merneJedinice.get(i)));
-			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, null, null));
-			return true;
+		private List<Observer> observers;
+
+		public List<Recept> getRecepti() {
+			return recepti;
 		}
 
 		public void pretraziRecepte(List<Recept> rezultatiPretrage, String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme) {
@@ -176,7 +167,6 @@ public class Aplikacija {
 		public void dodajRezultatPretrage(Recept recept, List<Recept> rezultatiPretrage) {
 			rezultatiPretrage.add(recept);
 		}
-		private List<Observer> observers; 
 			
 		@Override
 		public void addObserver(Observer observer) {
@@ -184,19 +174,33 @@ public class Aplikacija {
 				observers = new ArrayList<Observer>();
 			observers.add(observer);
 		}
+
 		@Override
 		public void removeObserver(Observer observer) {
 			if (null == observers)
 				return;
 			observers.remove(observer);
-		}	
+		}
+
 		@Override
 		public void notifyObservers() {
 			UpdateEvent e = new UpdateEvent(this);
 			for (Observer observer : observers) {
 				observer.updatePerformed(e);
-			}			
+			}
 		}
+
+		public boolean dodajNoviRecept(String naziv, Tezina tezina, String opis,
+									   Float vremePripreme, List<Kategorija> kategorije, List<Namirnica> namirnice, List<Float> kolicine, List<MernaJedinica> merneJedinice, List<Oprema> opreme) {
+
+			HashMap<Namirnica, Sastojanje> namirnicaSastojanje = new HashMap<>();
+			for (int i = 0; i < namirnice.size(); ++i)
+				namirnicaSastojanje.put(namirnice.get(i), new Sastojanje(kolicine.get(i), merneJedinice.get(i)));
+			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, null, kategorije));
+			notifyObservers();
+			return true;
+		}
+
 	}
 
 	public class MenadzerNamirnica {
@@ -237,12 +241,83 @@ public class Aplikacija {
 		}
 	}
 
-	public class MenadzerKategorija {
+	public class MenadzerKategorija implements Publisher {
 		private ArrayList<Kategorija> kategorije;
 
+		private Kategorija parentKategorija;
+
+		private List<Observer> observers;
+
 		public MenadzerKategorija() throws IOException, ClassNotFoundException {
+			this.parentKategorija = null;
 			this.kategorije = new ArrayList<>();
 			this.deserialize();
+		}
+
+		public void dodajKategoriju(Kategorija parent, String naziv) {
+			if (parent != null) {
+				for (Kategorija k : parent.getPotkategorije()) {
+					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
+				}
+				parent.getPotkategorije().add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<Kategorija>()));
+			} else kategorije.add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<Kategorija>()));
+			notifyObservers();
+		}
+
+		public ArrayList<Kategorija> getKategorije() {
+			return kategorije;
+		}
+
+		private void findKategorija(Kategorija kriterijumKategorija, Kategorija currentKategorija) {
+			if (!currentKategorija.getPotkategorije().isEmpty()) {
+				for (Kategorija k : currentKategorija.getPotkategorije()) {
+					if (kriterijumKategorija.getSifraKategorije().equals(k.getSifraKategorije())) {
+						parentKategorija = currentKategorija;
+					}
+					if (parentKategorija != null) return;
+					findKategorija(kriterijumKategorija, k);
+				}
+				if (parentKategorija != null) return;
+			}
+		}
+
+		public void obrisiKategoriju(Kategorija kategorija) {
+			parentKategorija = null;
+			for (Kategorija k : kategorije) {
+				if (k.equals(kategorija)) {
+					kategorije.remove(k);
+					notifyObservers();
+					return;
+				}
+			}
+
+			for (Kategorija k : kategorije) findKategorija(kategorija, k);
+			if (parentKategorija == null) throw new NullPointerException();
+			parentKategorija.getPotkategorije().remove(kategorija);
+			notifyObservers();
+		}
+
+		public void preimenujKategoriju(Kategorija kategorija, String naziv) {
+			parentKategorija = null;
+			for (Kategorija k : kategorije) {
+				if (k.equals(kategorija)) {
+					parentKategorija = k;
+					break;
+				}
+			}
+			if (parentKategorija != null) {
+				for (Kategorija k : kategorije) {
+					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
+				}
+				kategorija.setNaziv(naziv);
+			}
+			for (Kategorija k : kategorije) findKategorija(kategorija, k);
+			if (parentKategorija != null) {
+				for (Kategorija k : parentKategorija.getPotkategorije()) {
+					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
+				}
+				kategorija.setNaziv(naziv);
+			}
 		}
 
 		public void serialize() throws IOException {
@@ -268,13 +343,34 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		public List<Kategorija> getKategorije(){
-			return kategorije;
+
+
+		@Override
+		public void addObserver(Observer observer) {
+			if (null == observers)
+				observers = new ArrayList<Observer>();
+			observers.add(observer);
+		}
+
+		@Override
+		public void removeObserver(Observer observer) {
+			if (null == observers)
+				return;
+			observers.remove(observer);
+		}
+
+		@Override
+		public void notifyObservers() {
+			UpdateEvent e = new UpdateEvent(this);
+			for (Observer observer : observers) {
+				observer.updatePerformed(e);
+			}
 		}
 	}
 
 	public class MenadzerOpreme {
 		private ArrayList<Oprema> oprema;
+
 
 		public MenadzerOpreme() throws IOException, ClassNotFoundException {
 			this.oprema = new ArrayList<>();
