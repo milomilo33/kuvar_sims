@@ -122,9 +122,13 @@ public class Aplikacija {
 
 		private Boolean uspesnoRegistrovan;
 		
+		public Boolean getUspesnoRegistrovan() {
+			return uspesnoRegistrovan;
+		}
+		
 		@Override
 		public void notifyObservers() {
-			UpdateEvent e = new UpdateEvent(uspesnoRegistrovan);
+			UpdateEvent e = new UpdateEvent(this);
 			for (Observer observer : observers) {
 				observer.updatePerformed(e);
 			}
@@ -143,6 +147,26 @@ public class Aplikacija {
 			if (uspesnoRegistrovan)
 				korisnici.add(noviKorisnik);
 			notifyObservers();
+		}
+		
+		/*private Korisnik uspesnoPrijavljenKorisnik;
+		
+		public Korisnik getUspesnoPrijavljenKorisnik() {
+			return uspesnoPrijavljenKorisnik;
+		}*/
+		
+		public void prijaviKorisnika(String username, String password) throws IllegalArgumentException {
+			for (Korisnik korisnik : korisnici)
+				if (korisnik.getUsername().equals(username)) {
+					if (korisnik.getPassword().equals(password)) {
+						trenutniKorisnik = korisnik;
+						notifyObservers();
+						return;
+					}
+					else
+						throw new IllegalArgumentException("Uneli ste pogresnu sifru!");
+				}
+			throw new IllegalArgumentException("Uneseno korisnicko ime ne postoji!");
 		}
 	}
 

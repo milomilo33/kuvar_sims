@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -31,6 +33,7 @@ import controller.KontrolerRegistracije;
 import event.Observer;
 import event.UpdateEvent;
 import model.Aplikacija;
+import model.Aplikacija.MenadzerKorisnika;
 import model.Korisnik;
 import model.Mesec;
 import utility.DataGenerator;
@@ -248,14 +251,22 @@ public class ProzorZaRegistraciju extends JFrame implements Observer {
 		contentPane.add(btnRegistruj, gbc_btnRegistruj);
 		JRootPane rootPane = SwingUtilities.getRootPane(btnRegistruj); 
 		rootPane.setDefaultButton(btnRegistruj);
+		
+		this.addWindowListener(new WindowAdapter() {
+	         public void windowClosing(WindowEvent windowEvent){
+	        	 ProzorZaRegistraciju prozor = (ProzorZaRegistraciju) windowEvent.getSource();
+	             prozor.aplikacija.getMenadzerKorisnika().removeObserver(prozor);
+	         }        
+	    }); 
 	}
 
 	public void updatePerformed(UpdateEvent e) {
-		Boolean uspesnoRegistrovan = (Boolean) e.getSource();
+		Boolean uspesnoRegistrovan = ((MenadzerKorisnika) e.getSource()).getUspesnoRegistrovan();
 		if (!uspesnoRegistrovan)
 			JOptionPane.showMessageDialog(null, "Korisnik vec postoji!", "Greska", JOptionPane.ERROR_MESSAGE);
 		else {
 			JOptionPane.showMessageDialog(null, "Uspesno ste se registrovali.", "", JOptionPane.INFORMATION_MESSAGE);
+			this.aplikacija.getMenadzerKorisnika().removeObserver(this);
 			this.dispose();
 		}
 		
