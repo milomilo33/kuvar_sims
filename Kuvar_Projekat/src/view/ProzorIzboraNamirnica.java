@@ -1,40 +1,18 @@
 package view;
 
-<<<<<<< Updated upstream
-=======
-import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.ListModel;
-import javax.swing.JList;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.event.ListSelectionListener;
 
 import model.Aplikacija;
->>>>>>> Stashed changes
 import model.Namirnica;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-<<<<<<< Updated upstream
 import javax.swing.event.ListSelectionListener;
-import java.util.List;
-=======
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
->>>>>>> Stashed changes
+import java.util.List;
+
 
 public class ProzorIzboraNamirnica {
 
@@ -70,11 +48,9 @@ public class ProzorIzboraNamirnica {
 		frmIzborNamirnica.setTitle("Izbor namirnica");
 		frmIzborNamirnica.setResizable(false);
 		frmIzborNamirnica.setBounds(100, 100, 266, 555);
-<<<<<<< Updated upstream
+
 		frmIzborNamirnica.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-=======
-		frmIzborNamirnica.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
->>>>>>> Stashed changes
+
 		frmIzborNamirnica.getContentPane().setLayout(null);
 
 		JButton btnDodajNamirnicuU = new JButton("Dodaj namirnicu u izbor");
@@ -125,10 +101,7 @@ public class ProzorIzboraNamirnica {
 				selektovanaNamirnica = (Namirnica) list.getSelectedValue();
 			}
 		});
-<<<<<<< Updated upstream
 
-	}
-=======
 		
 		frmIzborNamirnica.addWindowListener(new WindowAdapter() {
 			@Override
@@ -138,5 +111,5 @@ public class ProzorIzboraNamirnica {
 			}
 		});
 		}
->>>>>>> Stashed changes
+
 }

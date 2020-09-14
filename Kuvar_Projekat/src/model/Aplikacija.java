@@ -11,12 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Aplikacija {
-	private Korisnik trenutniKorisnik;
-<<<<<<< Updated upstream
-	private MenadzerKorisnika menadzerKorisnika;
-	private MenadzerRecepata menadzerRecepata;
-	private MenadzerNamirnica menadzerNamirnica;
-	private MenadzerOpreme menadzerOpreme;
+
+	public MenadzerKategorija menadzerKategorija;
 
 	public MenadzerKorisnika getMenadzerKorisnika() {
 		return menadzerKorisnika;
@@ -38,14 +34,13 @@ public class Aplikacija {
 		return menadzerKategorija;
 	}
 
-	private MenadzerKategorija menadzerKategorija;
-=======
+	private Korisnik trenutniKorisnik;
+
 	public MenadzerKorisnika menadzerKorisnika;
 	public MenadzerRecepata menadzerRecepata;
 	public MenadzerNamirnica menadzerNamirnica;
 	public MenadzerOpreme menadzerOpreme;
-	public MenadzerKategorija menadzerKategorija;
->>>>>>> Stashed changes
+
 
 	public Aplikacija() throws IOException, ClassNotFoundException {
 		this.trenutniKorisnik = null;
@@ -235,7 +230,7 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		
+
 		public ArrayList<Namirnica> getNamirnice() {
 			return this.namirnice;
 		}

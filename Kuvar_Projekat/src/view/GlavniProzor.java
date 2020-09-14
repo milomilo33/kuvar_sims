@@ -83,16 +83,10 @@ public class GlavniProzor extends JFrame implements Observer{
 		this.aplikacija = aplikacija;
 		this.aplikacija.menadzerRecepata.addObserver(this);
 		this.kontroler = kontroler;
-<<<<<<< Updated upstream
-		this.rezultatPretrage = new ArrayList<>();
-		this.kriterijumPretrageNamirnice = new ArrayList<>();
-		this.kriterijumPretrageOprema = new ArrayList<>();
-=======
 		this.rezultatiPretrage = new ArrayList<Recept>();
 		this.kriterijumPretrageNamirnice = new ArrayList<Namirnica>();
 		this.kriterijumPretrageOprema = new ArrayList<Oprema>();
 		this.kriterijumPretrageKategorije = new ArrayList<Kategorija>();
->>>>>>> Stashed changes
 		initGUI();
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
