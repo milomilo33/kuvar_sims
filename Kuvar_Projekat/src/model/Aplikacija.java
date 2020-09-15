@@ -100,17 +100,17 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		
+
 		public List<Korisnik> getKorisnici(){
 			return korisnici;
 		}
 
 		private Boolean uspesnoRegistrovan;
-		
+
 		public Boolean getUspesnoRegistrovan() {
 			return uspesnoRegistrovan;
 		}
-		
+
 		public void dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
 			Korisnik noviKorisnik = new Korisnik(ime, prezime, datumRodjenja, username, password, brojTelefona, adresa);
@@ -263,6 +263,7 @@ public class Aplikacija {
 			for (int i = 0; i < namirnice.size(); ++i)
 				namirnicaSastojanje.put(namirnice.get(i), new Sastojanje(kolicine.get(i), merneJedinice.get(i)));
 			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, null, kategorije));
+			trenutniKorisnik.dodajReceptKorisnika(recepti.get(recepti.size() - 1));
 			notifyObservers();
 			return true;
 		}

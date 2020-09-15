@@ -115,6 +115,7 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
             }
         });
 
+        expand();
         frame.setVisible(true);
     }
 
@@ -136,6 +137,12 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
                 parent = linKategorije.get(parent);
             }
             return s.toString();
+        }
+    }
+
+    private void expand() {
+        for (int i = 0; i < treeKategorija.getRowCount(); i++) {
+            treeKategorija.expandRow(i);
         }
     }
 

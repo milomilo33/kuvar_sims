@@ -135,7 +135,13 @@ public class ProzorDodavanjaRecepta {
         btnOK.setBounds(815, 642, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOK);
         btnOK.addActionListener(e -> {
-            kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
+            try {
+                kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
+                JOptionPane.showMessageDialog(null, "Recept uspesno dodat");
+            } catch (IllegalArgumentException | NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, "Neispravni uneti elementi");
+            }
+
         });
 
         JButton btnOdustanak = new JButton("Odustanak");

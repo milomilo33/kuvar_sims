@@ -1,9 +1,6 @@
 package view;
 
-import controller.KontrolerGlavnogProzora;
-import controller.KontrolerProzorIzmeneKategorija;
-import controller.KontrolerProzoraDodavanjaRecepta;
-import controller.KontrolerProzoraPrikazaRecepta;
+import controller.*;
 import event.Observer;
 import event.UpdateEvent;
 import model.*;
@@ -133,6 +130,10 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnPregled.add(mntmProfil);
+		mntmProfil.addActionListener(e -> {
+			ProzorProfilaKorisnika prozor = new ProzorProfilaKorisnika(aplikacija, new KontrolerProzorProfilaKorisnika(aplikacija));
+		});
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
