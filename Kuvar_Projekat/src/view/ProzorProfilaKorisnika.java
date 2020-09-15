@@ -1,10 +1,7 @@
 package view;
 
 import controller.KontrolerProzorProfilaKorisnika;
-import model.Aplikacija;
-import model.Namirnica;
-import model.Oprema;
-import model.Posedovanje;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +10,7 @@ import java.util.HashMap;
 
 public class ProzorProfilaKorisnika {
 
-    private JFrame frmProfilnaStrana;
+    private JDialog frmProfilnaStrana;
     private JTextField txtIme;
     private JTextField txtPrezime;
     private JTextField txtDatumRodjenja;
@@ -28,37 +25,24 @@ public class ProzorProfilaKorisnika {
     private ArrayList<Oprema> oprema;
     private MyNamirniceProfilModel namirniceModel;
     private MyListModelOprema modelOprema;
+    private ArrayList<Namirnica> listNamirnice;
+    private ArrayList<MernaJedinica> listMerneJedinice;
+    private ArrayList<Float> listKolicine;
 
 
-    /**
-     * Create the application.
-     */
     public ProzorProfilaKorisnika(Aplikacija aplikacija, KontrolerProzorProfilaKorisnika kontroler) {
         this.aplikacija = aplikacija;
         this.kontroler = kontroler;
-        this.namirnice = (HashMap<Namirnica, Posedovanje>) aplikacija.getTrenutniKorisnik().getNamirnice();
-        this.oprema = (ArrayList<Oprema>) aplikacija.getTrenutniKorisnik().getOprema();
+        this.namirnice = new HashMap<>(aplikacija.getTrenutniKorisnik().getNamirnice());
+        this.oprema = new ArrayList<>(aplikacija.getTrenutniKorisnik().getOprema());
+        this.listNamirnice = new ArrayList<>();
+        this.listKolicine = new ArrayList<>();
+        this.listMerneJedinice = new ArrayList<>();
         initialize();
         popuniText();
         frmProfilnaStrana.setVisible(true);
     }
 
-    /**
-     * Launch the application.
-     * <p>
-     * public static void main(String[] args) {
-     * EventQueue.invokeLater(new Runnable() {
-     * public void run() {
-     * try {
-     * ProzorProfilaKorisnika window = new ProzorProfilaKorisnika();
-     * window.frmProfilnaStrana.setVisible(true);
-     * } catch (Exception e) {
-     * e.printStackTrace();
-     * }
-     * }
-     * });
-     * }
-     */
 
     public void popuniText() {
         if (this.aplikacija.getTrenutniKorisnik().getUloga() != null)
@@ -79,11 +63,10 @@ public class ProzorProfilaKorisnika {
             txtIme.setText(this.aplikacija.getTrenutniKorisnik().getIme());
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
+
     private void initialize() {
-        frmProfilnaStrana = new JFrame();
+        frmProfilnaStrana = new JDialog();
+        frmProfilnaStrana.setModal(true);
         frmProfilnaStrana.setResizable(false);
         frmProfilnaStrana.setTitle("Profilna strana");
         frmProfilnaStrana.setBounds(100, 100, 1007, 757);
@@ -118,18 +101,51 @@ public class ProzorProfilaKorisnika {
         JButton btnOprema = new JButton("Izmeni opremu");
         btnOprema.setBounds(728, 620, 137, 23);
         frmProfilnaStrana.getContentPane().add(btnOprema);
+        btnOprema.addActionListener(e -> {
+            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, this.oprema);
+            modelOprema.osvezi();
+        });
 
         JButton btnNamirnice = new JButton("Izmeni namirnice");
         btnNamirnice.setBounds(728, 316, 137, 23);
         frmProfilnaStrana.getContentPane().add(btnNamirnice);
+        btnNamirnice.addActionListener(e -> {
+            for (Namirnica n : namirnice.keySet()) {
+                this.listNamirnice.add(n);
+                this.listMerneJedinice.add(namirnice.get(n).getMernaJedinica());
+                this.listKolicine.add(namirnice.get(n).getKolicina());
+            }
+            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, this.listNamirnice, this.listMerneJedinice, this.listKolicine);
+            this.namirnice.clear();
+            for (int i = 0; i < this.listNamirnice.size(); i++) {
+                this.namirnice.put(this.listNamirnice.get(i), new Posedovanje(this.listKolicine.get(i), this.listMerneJedinice.get(i)));
+            }
+            namirniceModel.osvezi();
+            this.listNamirnice.clear();
+            this.listKolicine.clear();
+            this.listMerneJedinice.clear();
+        });
 
         JButton btnZavrsi = new JButton("Zavrsi i sacuvaj promene");
         btnZavrsi.setBounds(761, 673, 230, 23);
         frmProfilnaStrana.getContentPane().add(btnZavrsi);
+        btnZavrsi.addActionListener(e -> {
+            try {
+                kontroler.izmeniProfil(this.aplikacija.getTrenutniKorisnik(), txtIme.getText(), txtPrezime.getText(), txtPassword.getText(), txtBrojTelefona.getText(), txtAdresa.getText(), oprema, namirnice);
+                frmProfilnaStrana.dispose();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "Popunite sva polja");
+            } catch (NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, "Korisnik nije u sistemu");
+            }
+        });
 
         JButton btnOdustanak = new JButton("Odustanak");
         btnOdustanak.setBounds(600, 673, 109, 23);
         frmProfilnaStrana.getContentPane().add(btnOdustanak);
+        btnOdustanak.addActionListener(e -> {
+            frmProfilnaStrana.dispose();
+        });
 
         JPanel panel = new JPanel();
         panel.setBounds(10, 60, 391, 549);
@@ -293,6 +309,7 @@ public class ProzorProfilaKorisnika {
         public void osvezi() {
             this.listNamirnica.clear();
             this.listNamirnica.addAll(this.namirnices.keySet());
+            this.fireContentsChanged(this, 0, getSize());
         }
 
         @Override

@@ -2,8 +2,6 @@ package main;
 
 import controller.KontrolerGlavnogProzora;
 import model.Aplikacija;
-import model.MernaJedinica;
-import model.Posedovanje;
 import utility.IDGenerator;
 import view.GlavniProzor;
 
@@ -20,8 +18,8 @@ public class Main {
 		IDGenerator.INSTANCE.deserialize();
 		Aplikacija aplikacija = new Aplikacija();
 		aplikacija.setTrenutniKorisnik(aplikacija.getMenadzerKorisnika().getKorisnici().get(0));
-		aplikacija.getTrenutniKorisnik().getOprema().add(aplikacija.getMenadzerOpreme().getOprema().get(0));
-		aplikacija.getTrenutniKorisnik().getNamirnice().put(aplikacija.getMenadzerNamirnica().getNamirnice().get(0), new Posedovanje((float) 20, MernaJedinica.G));
+		//aplikacija.getTrenutniKorisnik().getOprema().add(aplikacija.getMenadzerOpreme().getOprema().get(0));
+		//aplikacija.getTrenutniKorisnik().getNamirnice().put(aplikacija.getMenadzerNamirnica().getNamirnice().get(0), new Posedovanje((float) 20, MernaJedinica.G));
 		KontrolerGlavnogProzora kontroler = new KontrolerGlavnogProzora(aplikacija);
 		GlavniProzor prozor = new GlavniProzor(aplikacija, kontroler);
 		prozor.setVisible(true);
