@@ -1,13 +1,8 @@
 package controller;
 
-import java.util.List;
+import model.*;
 
-import model.Aplikacija;
-import model.Kategorija;
-import model.Namirnica;
-import model.Oprema;
-import model.Recept;
-import model.Tezina;
+import java.util.List;
 
 public class KontrolerGlavnogProzora {
 	private Aplikacija aplikacija;
@@ -16,6 +11,7 @@ public class KontrolerGlavnogProzora {
 	public KontrolerGlavnogProzora(Aplikacija aplikacija) {
 		this.aplikacija = aplikacija;
 	}
+
 	public void pretraziRecepte(List<Recept> rezultatiPretrage, String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, String vremePripreme) {
 			float vp = 1000000;
 			if(!vremePripreme.equals(""))

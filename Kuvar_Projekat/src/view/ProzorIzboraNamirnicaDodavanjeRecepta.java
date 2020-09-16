@@ -21,12 +21,12 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
     private ArrayList<Namirnica> dodateNamirnice;
     private ArrayList<MernaJedinica> dodateMerneJedinice;
     private ArrayList<Float> dodateKolicine;
-    private ProzorDodavanjaRecepta parent;
+
 
     /**
      * Create the application.
      */
-    public ProzorIzboraNamirnicaDodavanjeRecepta(ProzorDodavanjaRecepta parent, Aplikacija aplikacija, ArrayList<Namirnica> dodateNamirnice,
+    public ProzorIzboraNamirnicaDodavanjeRecepta(Aplikacija aplikacija, ArrayList<Namirnica> dodateNamirnice,
                                                  ArrayList<MernaJedinica> dodateMerneJedinice, ArrayList<Float> dodateKolicine) {
         dodatiSastojci = new ArrayList<>();
         for (int i = 0; i < dodateNamirnice.size(); ++i)
@@ -36,7 +36,6 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
         this.dodateNamirnice = dodateNamirnice;
         this.dodateMerneJedinice = dodateMerneJedinice;
         this.dodateKolicine = dodateKolicine;
-        this.parent = parent;
         initialize();
     }
 
@@ -116,7 +115,6 @@ public class ProzorIzboraNamirnicaDodavanjeRecepta {
                 this.dodateMerneJedinice.add(ds.dodataMernaJedinica);
                 this.dodateKolicine.add(ds.dodataKolicina);
             }
-            parent.osveziNamirnice();
             frame.dispose();
 
         });

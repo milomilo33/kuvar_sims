@@ -101,17 +101,17 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		
+
 		public List<Korisnik> getKorisnici(){
 			return korisnici;
 		}
 
 		private Boolean uspesnoRegistrovan;
-		
+
 		public Boolean getUspesnoRegistrovan() {
 			return uspesnoRegistrovan;
 		}
-		
+
 		public void dodajNovogKorisnika(String ime, String prezime, LocalDate datumRodjenja, String username, String password,
 										   String brojTelefona, String adresa) {
 			Korisnik noviKorisnik = new Korisnik(ime, prezime, datumRodjenja, username, password, brojTelefona, adresa);
@@ -140,13 +140,12 @@ public class Aplikacija {
 						trenutniKorisnik = korisnik;
 						notifyObservers();
 						return;
-					}
-					else
+					} else
 						throw new IllegalArgumentException("Uneli ste pogresnu sifru!");
 				}
 			throw new IllegalArgumentException("Uneseno korisnicko ime ne postoji!");
 		}
-		
+
 		public void pretplatiSe(Korisnik k, AtomicBoolean retVal) {
 			retVal.set(trenutniKorisnik.pretplatiSe(k));
 			notifyObservers();
@@ -157,8 +156,19 @@ public class Aplikacija {
 			notifyObservers();
 		}
 		
+
+		public void izmeniProfil(Korisnik korisnik, String ime, String prezime, String password, String brojTelefona, String adresa, ArrayList<Oprema> oprema, HashMap<Namirnica, Posedovanje> namirnice) {
+			korisnik.setIme(ime);
+			korisnik.setPrezime(prezime);
+			korisnik.setPassword(password);
+			korisnik.setBrojTelefona(brojTelefona);
+			korisnik.setAdresa(adresa);
+			korisnik.setOprema(oprema);
+			korisnik.setNamirnice(namirnice);
+		}
+
 		private List<Observer> observers;
-		
+
 		@Override
 		public void addObserver(Observer observer) {
 			if (null == observers)
@@ -273,6 +283,7 @@ public class Aplikacija {
 			for (int i = 0; i < namirnice.size(); ++i)
 				namirnicaSastojanje.put(namirnice.get(i), new Sastojanje(kolicine.get(i), merneJedinice.get(i)));
 			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, null, kategorije));
+			trenutniKorisnik.dodajReceptKorisnika(recepti.get(recepti.size() - 1));
 			notifyObservers();
 			return true;
 		}
@@ -335,8 +346,8 @@ public class Aplikacija {
 				for (Kategorija k : parent.getPotkategorije()) {
 					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
 				}
-				parent.getPotkategorije().add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<Kategorija>()));
-			} else kategorije.add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<Kategorija>()));
+				parent.getPotkategorije().add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
+			} else kategorije.add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
 			notifyObservers();
 		}
 
@@ -353,7 +364,6 @@ public class Aplikacija {
 					if (parentKategorija != null) return;
 					findKategorija(kriterijumKategorija, k);
 				}
-				if (parentKategorija != null) return;
 			}
 		}
 

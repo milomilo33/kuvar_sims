@@ -1,6 +1,8 @@
 package model;
 
-public enum MernaJedinica {
+import java.io.Serializable;
+
+public enum MernaJedinica implements Serializable {
 	MG,
 	G,
 	KG;

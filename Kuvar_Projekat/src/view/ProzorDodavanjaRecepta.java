@@ -112,8 +112,9 @@ public class ProzorDodavanjaRecepta {
         btnNamirnica.setBounds(28, 167, 134, 23);
         frmDodavanjeRecepta.getContentPane().add(btnNamirnica);
         btnNamirnica.addActionListener(e -> {
-            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(this, aplikacija,
+            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija,
                     namirnice, merneJedinice, kolicine);
+            osveziNamirnice();
         });
 
         JScrollPane scrollPane_1 = new JScrollPane();
@@ -128,14 +129,21 @@ public class ProzorDodavanjaRecepta {
         btnOprema.setBounds(815, 167, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOprema);
         btnOprema.addActionListener(e -> {
-            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(this, aplikacija, oprema);
+            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, oprema);
+            osveziOpremu();
         });
 
         JButton btnOK = new JButton("Napravi Recept");
         btnOK.setBounds(815, 642, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOK);
         btnOK.addActionListener(e -> {
-            kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
+            try {
+                kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
+                JOptionPane.showMessageDialog(null, "Recept uspesno dodat");
+            } catch (IllegalArgumentException | NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, "Neispravni uneti elementi");
+            }
+
         });
 
         JButton btnOdustanak = new JButton("Odustanak");

@@ -73,6 +73,7 @@ public class ProzorIzmeneKategorija implements Observer {
         frame.getContentPane().add(btnZavrsi);
         btnZavrsi.addActionListener(e -> frame.dispose());
 
+        expand();
         frame.setVisible(true);
     }
 
@@ -86,7 +87,7 @@ public class ProzorIzmeneKategorija implements Observer {
                 if (!selectedNode.isRoot()) parent = (Kategorija) selectedNode.getUserObject();
             }
             try {
-                kontroler.dodajKategoriju(parent, naziv);
+                if (naziv != null) kontroler.dodajKategoriju(parent, naziv);
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Unesite neprazan naziv");
             } catch (IllegalArgumentException ex) {
@@ -105,7 +106,8 @@ public class ProzorIzmeneKategorija implements Observer {
         mnPreimenuj.addActionListener(e -> {
             if (selectedNode != null) {
                 try {
-                    kontroler.preimenujKategoriju((Kategorija) selectedNode.getUserObject(), JOptionPane.showInputDialog("Unesite novi naziv"));
+                    String s = JOptionPane.showInputDialog("Unesite novi naziv");
+                    if (s != null) kontroler.preimenujKategoriju((Kategorija) selectedNode.getUserObject(), s);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Potkategorija sa tim nazivom vec postoji");
                 } catch (NullPointerException ex) {
@@ -137,11 +139,19 @@ public class ProzorIzmeneKategorija implements Observer {
         };
     }
 
+
+    private void expand() {
+        for (int i = 0; i < treeKategorija.getRowCount(); i++) {
+            treeKategorija.expandRow(i);
+        }
+    }
+
     @Override
     public void updatePerformed(UpdateEvent e) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         treeModel = new DefaultTreeModel(root);
         for (Kategorija k : kategorije) parseKategorije(root, k);
         treeKategorija.setModel(treeModel);
+        expand();
     }
 }

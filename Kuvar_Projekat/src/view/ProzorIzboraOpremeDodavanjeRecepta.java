@@ -11,16 +11,14 @@ public class ProzorIzboraOpremeDodavanjeRecepta {
 
     private JDialog dialog;
     private Vector<Oprema> svaOprema;
-    private ProzorDodavanjaRecepta parent;
     private ArrayList<Oprema> dodataOprema;
     private MyListModelOprema modelOprema;
 
     /**
      * Create the application.
      */
-    public ProzorIzboraOpremeDodavanjeRecepta(ProzorDodavanjaRecepta parent, Aplikacija aplikacija, ArrayList<Oprema> dodataOprema) {
+    public ProzorIzboraOpremeDodavanjeRecepta(Aplikacija aplikacija, ArrayList<Oprema> dodataOprema) {
         this.svaOprema = new Vector<>(aplikacija.getMenadzerOpreme().getOprema());
-        this.parent = parent;
         this.dodataOprema = dodataOprema;
 
         initialize();
@@ -79,10 +77,7 @@ public class ProzorIzboraOpremeDodavanjeRecepta {
         JButton btnZavrsi = new JButton("Zavrsi");
         btnZavrsi.setBounds(307, 414, 89, 23);
         dialog.getContentPane().add(btnZavrsi);
-        btnZavrsi.addActionListener(e -> {
-            parent.osveziOpremu();
-            dialog.dispose();
-        });
+        btnZavrsi.addActionListener(e -> dialog.dispose());
         dialog.setVisible(true);
     }
 

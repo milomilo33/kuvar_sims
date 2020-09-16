@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,14 +35,30 @@ public class Korisnik implements Serializable {
 		this.brojTelefona = brojTelefona;
 		this.adresa = adresa;
 		this.uloga = uloga;
-		this.jePretplacen = jePretplacen;
-		this.recepti = recepti;
-		this.namirnice = namirnice;
-		this.oprema = oprema;
-		this.knjigeRecepata = knjigeRecepata;
+		if (jePretplacen != null) {
+			this.jePretplacen = jePretplacen;
+		} else this.jePretplacen = new ArrayList<>();
+		if (recepti != null) {
+			this.recepti = recepti;
+		} else this.recepti = new ArrayList<>();
+		if (namirnice != null) {
+			this.namirnice = namirnice;
+		} else this.namirnice = new HashMap<>();
+		if (oprema != null) {
+			this.oprema = oprema;
+		} else this.oprema = new ArrayList<>();
+		if (knjigeRecepata != null) {
+			this.knjigeRecepata = knjigeRecepata;
+		} else this.knjigeRecepata = new ArrayList<>();
 	}
 
 	public Korisnik(String ime, String prezime, LocalDate datumRodjenja, String username, String password, String brojTelefona, String adresa) {
+		this.jePretplacen = new ArrayList<>();
+		this.recepti = new ArrayList<>();
+		this.namirnice = new HashMap<>();
+		this.oprema = new ArrayList<>();
+		this.knjigeRecepata = new ArrayList<>();
+		this.elementiBookmarkovanja = new ArrayList<>();
 		this.ime = ime;
 		this.prezime = prezime;
 		this.datumRodjenja = datumRodjenja;
