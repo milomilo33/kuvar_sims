@@ -26,4 +26,8 @@ public class KnjigaRecepata {
 	public List<Recept> getReceptiSekcije(String sekcija){
 		return sekcijeRecepti.get(sekcija);
 	}
+	@Override
+	public String toString() {
+		return this.naziv;
+	}
 }

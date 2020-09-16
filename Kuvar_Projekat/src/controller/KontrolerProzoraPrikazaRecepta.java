@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import model.Aplikacija;
 import model.Korisnik;
+import model.Recept;
 
 public class KontrolerProzoraPrikazaRecepta {
 	private Aplikacija aplikacija;
@@ -14,5 +15,8 @@ public class KontrolerProzoraPrikazaRecepta {
 	}
 	public void pretplatiSe(Korisnik k, AtomicBoolean retVal) {
 		aplikacija.menadzerKorisnika.pretplatiSe(k, retVal);
+	}
+	public boolean verifikacijaRecepta(Recept recept) {
+		return aplikacija.menadzerRecepata.verifikacijaRecepta(recept);
 	}
 }

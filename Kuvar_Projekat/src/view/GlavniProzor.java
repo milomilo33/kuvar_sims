@@ -1,9 +1,12 @@
 package view;
 
 import controller.KontrolerGlavnogProzora;
+import controller.KontrolerPrijave;
 import controller.KontrolerProzorIzmeneKategorija;
+import controller.KontrolerProzoraDodavanjaKnjigeRecepata;
 import controller.KontrolerProzoraDodavanjaRecepta;
 import controller.KontrolerProzoraPrikazaRecepta;
+import controller.KontrolerRegistracije;
 import event.Observer;
 import event.UpdateEvent;
 import model.*;
@@ -109,7 +112,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		mnDodavanje.add(mntmDodajOpremu);
 
 		mnDodavanje.add(mntmDodajKnjiguRecepata).addActionListener(e -> {
-			ProzorDodavanjaKnjigeRecepata prozorDodavanjaKnjigeRecepata = new ProzorDodavanjaKnjigeRecepata(aplikacija, null);
+			ProzorDodavanjaKnjigeRecepata prozorDodavanjaKnjigeRecepata = new ProzorDodavanjaKnjigeRecepata(aplikacija, null, new KontrolerProzoraDodavanjaKnjigeRecepata(aplikacija));
 		});
 
 		mnDodavanje.add(mntmDodajKategoriju);
@@ -123,7 +126,9 @@ public class GlavniProzor extends JFrame implements Observer{
 
 		mnPregled.add(mntmBookmarkovi);
 
-		mnPregled.add(mntmKnjigeRecepata);
+		mnPregled.add(mntmKnjigeRecepata).addActionListener(e -> {
+			ProzorPregledaKnjigaRecepata prozorPregledaKnjigaRecepata = new ProzorPregledaKnjigaRecepata(aplikacija);
+		});
 
 		mnPregled.add(mntmLicniRecepti);
 
@@ -235,6 +240,16 @@ public class GlavniProzor extends JFrame implements Observer{
 		            int index = list.locationToIndex(e.getPoint());
 		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazaniRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
 		        }
+			}
+		});
+		btnPrijava.addActionListener(new ActionListener() {//pritisnuto dugme prijava
+			public void actionPerformed(ActionEvent e) {
+				ProzorZaPrijavu prozorZaPrijavu = new ProzorZaPrijavu(aplikacija, new KontrolerPrijave(aplikacija));
+			}
+		});
+		btnRegistracija.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProzorZaRegistraciju prozorZaRegistraciju = new ProzorZaRegistraciju(aplikacija, new KontrolerRegistracije(aplikacija));
 			}
 		});
 		scrollPaneRecepti.setBounds(212, 128, 368, 339);

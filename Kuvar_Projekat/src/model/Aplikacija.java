@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Aplikacija {
@@ -151,6 +152,11 @@ public class Aplikacija {
 			notifyObservers();
 		}
 		
+		public void dodajKnjiguRecepata(String naziv, Map<String, List<Recept>> sekcije) {
+			trenutniKorisnik.dodajKnjiguRecepata(naziv, sekcije);
+			notifyObservers();
+		}
+		
 		private List<Observer> observers;
 		
 		@Override
@@ -232,6 +238,10 @@ public class Aplikacija {
 
 		public void dodajRezultatPretrage(Recept recept, List<Recept> rezultatiPretrage) {
 			rezultatiPretrage.add(recept);
+		}
+		
+		public boolean verifikacijaRecepta(Recept recept) {
+			return trenutniKorisnik.equals(recept.getAutor());
 		}
 			
 		@Override

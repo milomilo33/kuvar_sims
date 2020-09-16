@@ -163,6 +163,21 @@ public class Korisnik implements Serializable {
 	public Boolean proveriKorisnika(Korisnik korisnik) {
 		return this.username.equals(korisnik.getUsername());
 	}
+	
+	public void dodajKnjiguRecepata(String naziv, Map<String, List<Recept>> sekcije) {
+		if(this.knjigeRecepata == null)
+			this.knjigeRecepata = new ArrayList<>();
+		else {
+			boolean nadjen = false;
+			for(KnjigaRecepata kr:this.knjigeRecepata)
+				if(naziv.equals(kr.getNaziv()))
+					nadjen = true;
+			if(nadjen)
+				throw new NumberFormatException();
+		}
+		this.knjigeRecepata.add(new KnjigaRecepata(naziv, sekcije));
+	}
+	
 	@Override
 	public String toString() {
 		return username;

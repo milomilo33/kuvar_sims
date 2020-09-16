@@ -29,12 +29,15 @@ public class ProzorPikazaRecepta implements Observer{
 	private Aplikacija aplikacija;
 	private AtomicBoolean porukaPretplate = new AtomicBoolean();
 	private KontrolerProzoraPrikazaRecepta kontroler;
+	private boolean tip;
 	
 	private JDialog frmRecept;
 	private JTextField textFieldNaziv;
 	private JTextField textFieldTezina;
 	private JTextField textFieldVremePripreme;
 	private JTextField textFieldAutor;
+	private JButton btnPretplatiSe = new JButton("Pretplati se");
+	private JButton btnKomentarisi = new JButton("Komentarisi");
 
 	/**
 	 * Launch the application.
@@ -49,6 +52,11 @@ public class ProzorPikazaRecepta implements Observer{
 		this.kontroler = kontroler;
 		this.aplikacija.menadzerKorisnika.addObserver(this);
 		initialize();
+		this.tip = false;
+		if(this.kontroler.verifikacijaRecepta(recept))
+			this.tip = true;
+		postaviPogled();
+		frmRecept.setModal(true);
 		frmRecept.setVisible(true);
 	}
 
@@ -150,23 +158,22 @@ public class ProzorPikazaRecepta implements Observer{
 		lblAutor.setBounds(424, 59, 64, 14);
 		frmRecept.getContentPane().add(lblAutor);
 		
-		JButton btnKomentarisi = new JButton("Komentarisi");
 		btnKomentarisi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // otvara prozor za komentarisanje
 				System.out.println(recept.getKomentari());
-				ProzorKomentarisanjaRecepta prozorKomentarisanjeRecepta = new ProzorKomentarisanjaRecepta(aplikacija, recept, new KontrolerProzoraKomentarisanjaRecepta(aplikacija));
+				ProzorKomentarisanjaRecepta prozorKomentarisanjeRecepta = new ProzorKomentarisanjaRecepta(aplikacija, recept, new KontrolerProzoraKomentarisanjaRecepta(aplikacija), tip);
 			}
 		});
 		btnKomentarisi.setBounds(576, 328, 181, 23);
 		frmRecept.getContentPane().add(btnKomentarisi);
 		
-		JButton btnPretplatiSe = new JButton("Pretplati se");
+		
 		btnPretplatiSe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				kontroler.pretplatiSe(recept.getAutor(), porukaPretplate);
 			}
 		});
-		btnPretplatiSe.setBounds(576, 378, 181, 23);
+		btnPretplatiSe.setBounds(576, 419, 181, 23);
 		frmRecept.getContentPane().add(btnPretplatiSe);
 		
 		JButton btnNewButton = new JButton("Potvrdi");
@@ -175,9 +182,26 @@ public class ProzorPikazaRecepta implements Observer{
 				frmRecept.dispose();
 			}
 		});
-		btnNewButton.setBounds(576, 431, 181, 23);
+		btnNewButton.setBounds(576, 463, 181, 23);
 		frmRecept.getContentPane().add(btnNewButton);
+		
+		JButton btnBookmarkuj = new JButton("Bookmarkuj");
+		btnBookmarkuj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//OVDE DODAJ ZA BOOKMARKE STVAR, imas atribute [aplikacija] i [recept]-recept koji se bookmarkuje
+			}
+		});
+		btnBookmarkuj.setBounds(576, 372, 181, 23);
+		frmRecept.getContentPane().add(btnBookmarkuj);
 	}
+	
+	private void postaviPogled() {
+		if(tip) {
+			btnPretplatiSe.setVisible(false);
+			btnKomentarisi.setText("Komentari");
+		}
+	}
+	
 	public void updatePerformed(UpdateEvent e) {
 		if(porukaPretplate!=null)
 			if(porukaPretplate.get())

@@ -49,8 +49,13 @@ public class DataGenerator {
             HashMap<Namirnica, Sastojanje> namirnicaSastojanje = new HashMap<>();
             for (int j = 0; j < 10; ++j)
                 namirnicaSastojanje.put(aplikacija.menadzerNamirnica.getNamirnice().get(j), new Sastojanje((float) i * 5, MernaJedinica.values()[new Random().nextInt(MernaJedinica.values().length)]));
-            aplikacija.menadzerRecepata.getRecepti().add(new Recept(IDGenerator.INSTANCE.requestID(), "recept" + i, Tezina.values()[new Random().nextInt(Tezina.values().length)],
-                    "opis" + i, (float) i * 10, namirnicaSastojanje, aplikacija.menadzerKorisnika.getKorisnici().get(temp), aplikacija.menadzerOpreme.getOprema(), randK, randKat));
+            Recept rr = new Recept(IDGenerator.INSTANCE.requestID(), "recept" + i, Tezina.values()[new Random().nextInt(Tezina.values().length)],
+                    "opis" + i, (float) i * 10, namirnicaSastojanje, aplikacija.menadzerKorisnika.getKorisnici().get(temp), aplikacija.menadzerOpreme.getOprema(), randK, randKat);
+            aplikacija.menadzerRecepata.getRecepti().add(rr);
+            if(aplikacija.menadzerKorisnika.getKorisnici().get(temp).getRecepti() == null) {
+            	aplikacija.menadzerKorisnika.getKorisnici().get(temp).setRecepti(new ArrayList<>());
+            }
+            aplikacija.menadzerKorisnika.getKorisnici().get(temp).getRecepti().add(rr);
         }
         aplikacija.setTrenutniKorisnik(null);
     }

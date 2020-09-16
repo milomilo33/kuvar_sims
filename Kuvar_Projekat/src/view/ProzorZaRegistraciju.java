@@ -258,6 +258,7 @@ public class ProzorZaRegistraciju extends JFrame implements Observer {
 	             prozor.aplikacija.getMenadzerKorisnika().removeObserver(prozor);
 	         }        
 	    }); 
+		setVisible(true);
 	}
 
 	public void updatePerformed(UpdateEvent e) {

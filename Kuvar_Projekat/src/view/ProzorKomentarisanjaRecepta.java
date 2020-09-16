@@ -33,11 +33,16 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 	private KontrolerProzoraKomentarisanjaRecepta kontroler;
 	private DefaultTableModel modelKomentari;
 	private StringBuilder ocena;
+	private boolean tip;
 	
 	private JDialog frame;
 	private JTable tableKomentari;
 	private JTextField textFieldOcena;
 	private JTextArea textAreaKomentar;
+	private JButton btnDodajKomentar = new JButton("Dodaj komentar");
+	private JLabel lblUnesiKomentar = new JLabel("Unesi komentar:");
+	private JLabel lblOceni = new JLabel("Oceni:");
+	private JComboBox comboBox = new JComboBox();
 
 	/**
 	 * Launch the application.
@@ -46,13 +51,15 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public ProzorKomentarisanjaRecepta(Aplikacija aplikacija, Recept recept, KontrolerProzoraKomentarisanjaRecepta kontroler) {
+	public ProzorKomentarisanjaRecepta(Aplikacija aplikacija, Recept recept, KontrolerProzoraKomentarisanjaRecepta kontroler, boolean tip) {
 		this.aplikacija = aplikacija;
 		this.recept = recept;
 		this.kontroler = kontroler;
+		this.tip = tip;
 		this.ocena = new StringBuilder("");
 		this.aplikacija.menadzerRecepata.addObserver(this);
 		initialize();
+		postaviPogled();
 		frame.setModal(true);
 		frame.setVisible(true);
 	}
@@ -106,7 +113,7 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 		
 		textFieldOcena = new JTextField();
 		textFieldOcena.setEditable(false);
-		textFieldOcena.setBounds(150, 19, 86, 20);
+		textFieldOcena.setBounds(167, 19, 86, 20);
 		frame.getContentPane().add(textFieldOcena);
 		textFieldOcena.setColumns(10);
 		if(recept.getKomentari()!=null)
@@ -116,20 +123,17 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 		textAreaKomentar.setBounds(10, 301, 428, 145);
 		frame.getContentPane().add(textAreaKomentar);
 		
-		JLabel lblUnesiKomentar = new JLabel("Unesi komentar:");
 		lblUnesiKomentar.setBounds(10, 280, 96, 14);
 		frame.getContentPane().add(lblUnesiKomentar);
 		
-		JLabel lblOceni = new JLabel("Oceni:");
 		lblOceni.setBounds(492, 280, 58, 14);
 		frame.getContentPane().add(lblOceni);
 		
-		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
 		comboBox.setBounds(560, 276, 67, 22);
 		frame.getContentPane().add(comboBox);
 		
-		JButton btnDodajKomentar = new JButton("Dodaj komentar");
+		
 		btnDodajKomentar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // dodaje unet komentar i ocenu
 				try {
@@ -172,6 +176,16 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 	
 	public void updateTextFieldOcena() {
 		textFieldOcena.setText(ocena.toString());
+	}
+	
+	public void postaviPogled() {
+		if(this.tip) {
+			btnDodajKomentar.setVisible(false);
+			comboBox.setVisible(false);
+			textAreaKomentar.setVisible(false);
+			lblUnesiKomentar.setVisible(false);
+			lblOceni.setVisible(false);
+		}
 	}
 	
 	public void updatePerformed(UpdateEvent e) {

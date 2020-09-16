@@ -19,7 +19,7 @@ public class Main {
 		IDGenerator.INSTANCE.deserialize();
 		Aplikacija aplikacija = new Aplikacija();
 		//DataGenerator.generisiPodatke(aplikacija);
-		aplikacija.setTrenutniKorisnik(aplikacija.menadzerKorisnika.getKorisnici().get(0));
+		//aplikacija.setTrenutniKorisnik(aplikacija.menadzerKorisnika.getKorisnici().get(0));
 		KontrolerGlavnogProzora kontroler = new KontrolerGlavnogProzora(aplikacija);
 		GlavniProzor prozor = new GlavniProzor(aplikacija, kontroler);
 		prozor.setVisible(true);

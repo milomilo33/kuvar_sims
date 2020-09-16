@@ -46,7 +46,7 @@ public class ProzorZaPrijavu extends JDialog implements Observer {
 			IDGenerator.INSTANCE.serialize();
 			KontrolerPrijave kontr = new KontrolerPrijave(aplikacija);
 			ProzorZaPrijavu dialog = new ProzorZaPrijavu(aplikacija, kontr);
-			dialog.setVisible(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,6 +60,7 @@ public class ProzorZaPrijavu extends JDialog implements Observer {
 		korisnickoImePolje.setBounds(104, 56, 228, 20);
 		korisnickoImePolje.setColumns(10);
 		initGUI();
+		setVisible(true);
 	}
 	
 	private void initGUI() {
