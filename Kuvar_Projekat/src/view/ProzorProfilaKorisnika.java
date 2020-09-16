@@ -102,7 +102,7 @@ public class ProzorProfilaKorisnika {
         btnOprema.setBounds(728, 620, 137, 23);
         frmProfilnaStrana.getContentPane().add(btnOprema);
         btnOprema.addActionListener(e -> {
-            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, this.oprema);
+            new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, this.oprema);
             modelOprema.osvezi();
         });
 
@@ -115,7 +115,7 @@ public class ProzorProfilaKorisnika {
                 this.listMerneJedinice.add(namirnice.get(n).getMernaJedinica());
                 this.listKolicine.add(namirnice.get(n).getKolicina());
             }
-            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, this.listNamirnice, this.listMerneJedinice, this.listKolicine);
+            new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, this.listNamirnice, this.listMerneJedinice, this.listKolicine);
             this.namirnice.clear();
             for (int i = 0; i < this.listNamirnice.size(); i++) {
                 this.namirnice.put(this.listNamirnice.get(i), new Posedovanje(this.listKolicine.get(i), this.listMerneJedinice.get(i)));
