@@ -156,6 +156,15 @@ public class Aplikacija {
 			notifyObservers();
 		}
 		
+		public void obrisiKnjiguRecepata(KnjigaRecepata knjigaRecepata) {
+			trenutniKorisnik.obrisiKnjiguRecepata(knjigaRecepata);
+			notifyObservers();
+		}
+		
+		public void preimenujKnjiguRecepata(String naziv, KnjigaRecepata knjigaRecepata) {
+			trenutniKorisnik.preimenujKnjiguRecepata(naziv, knjigaRecepata);
+			notifyObservers();
+		}
 
 		public void izmeniProfil(Korisnik korisnik, String ime, String prezime, String password, String brojTelefona, String adresa, ArrayList<Oprema> oprema, HashMap<Namirnica, Posedovanje> namirnice) {
 			korisnik.setIme(ime);
@@ -173,8 +182,6 @@ public class Aplikacija {
 		public void addObserver(Observer observer) {
 			if (null == observers)
 				observers = new ArrayList<Observer>();
-			else
-				observers.clear();
 			observers.add(observer);
 		}
 

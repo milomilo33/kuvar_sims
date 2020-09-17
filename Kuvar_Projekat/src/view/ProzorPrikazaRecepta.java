@@ -20,10 +20,12 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.event.ActionEvent;
 
-public class ProzorPikazaRecepta implements Observer{
+public class ProzorPrikazaRecepta implements Observer{
 
 	private Recept recept;
 	private Aplikacija aplikacija;
@@ -46,7 +48,7 @@ public class ProzorPikazaRecepta implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public ProzorPikazaRecepta(Recept recept, Aplikacija aplikacija, KontrolerProzoraPrikazaRecepta kontroler) {
+	public ProzorPrikazaRecepta(Recept recept, Aplikacija aplikacija, KontrolerProzoraPrikazaRecepta kontroler) {
 		this.recept = recept;
 		this.aplikacija = aplikacija;
 		this.kontroler = kontroler;
@@ -179,6 +181,7 @@ public class ProzorPikazaRecepta implements Observer{
 		JButton btnNewButton = new JButton("Potvrdi");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ro();
 				frmRecept.dispose();
 			}
 		});
@@ -193,6 +196,20 @@ public class ProzorPikazaRecepta implements Observer{
 		});
 		btnBookmarkuj.setBounds(576, 372, 181, 23);
 		frmRecept.getContentPane().add(btnBookmarkuj);
+		
+		frmRecept.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                ro();
+                frmRecept.dispose();
+            }
+        });
+	}
+	
+	private void ro() {
+		aplikacija.menadzerKorisnika.removeObserver(this);
 	}
 	
 	private void postaviPogled() {

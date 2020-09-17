@@ -24,6 +24,8 @@ import model.Aplikacija;
 import model.Komentar;
 import model.Recept;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class ProzorKomentarisanjaRecepta implements Observer{
@@ -149,6 +151,7 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 		JButton btnOdustani = new JButton("Odustani");
 		btnOdustani.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ro();
 				frame.dispose();
 			}
 		});
@@ -158,6 +161,16 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 		JLabel lblKomentari = new JLabel("Komentari:");
 		lblKomentari.setBounds(10, 51, 96, 14);
 		frame.getContentPane().add(lblKomentari);
+		
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                ro();
+                frame.dispose();
+            }
+        });
 	}
 	
 	public void updateTableKomentari() {
@@ -186,6 +199,10 @@ public class ProzorKomentarisanjaRecepta implements Observer{
 			lblUnesiKomentar.setVisible(false);
 			lblOceni.setVisible(false);
 		}
+	}
+	
+	private void ro() {
+		aplikacija.menadzerRecepata.removeObserver(this);
 	}
 	
 	public void updatePerformed(UpdateEvent e) {

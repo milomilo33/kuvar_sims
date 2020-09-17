@@ -47,7 +47,7 @@ public class ProzorIzboraNamirnica {
 		frmIzborNamirnica = new JDialog();
 		frmIzborNamirnica.setTitle("Izbor namirnica");
 		frmIzborNamirnica.setResizable(false);
-		frmIzborNamirnica.setBounds(100, 100, 266, 555);
+		frmIzborNamirnica.setBounds(100, 100, 266, 413);
 
 		frmIzborNamirnica.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -72,7 +72,7 @@ public class ProzorIzboraNamirnica {
 				
 			}
 		});
-		btnPrihvati.setBounds(50, 475, 162, 23);
+		btnPrihvati.setBounds(24, 330, 209, 23);
 		frmIzborNamirnica.getContentPane().add(btnPrihvati);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -87,15 +87,6 @@ public class ProzorIzboraNamirnica {
 		JLabel lblIzaberiNamirnicu = new JLabel("Izaberi namirnicu:");
 		lblIzaberiNamirnicu.setBounds(88, 11, 138, 14);
 		frmIzborNamirnica.getContentPane().add(lblIzaberiNamirnicu);
-		
-		JCheckBox chckbxUkljuciPersonalnePreference = new JCheckBox("Ukljuci personalne preference");
-		chckbxUkljuciPersonalnePreference.setBounds(6, 327, 227, 23);
-		frmIzborNamirnica.getContentPane().add(chckbxUkljuciPersonalnePreference);
-		
-		JCheckBox chckbxPrikaziRecepteKoji = new JCheckBox("Ukljuci samo izabrane sastojke");
-		chckbxPrikaziRecepteKoji.setActionCommand("");
-		chckbxPrikaziRecepteKoji.setBounds(6, 387, 220, 47);
-		frmIzborNamirnica.getContentPane().add(chckbxPrikaziRecepteKoji);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				selektovanaNamirnica = (Namirnica) list.getSelectedValue();

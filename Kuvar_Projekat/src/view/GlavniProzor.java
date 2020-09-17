@@ -121,7 +121,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		mnPregled.add(mntmBookmarkovi);
 
 		mnPregled.add(mntmKnjigeRecepata).addActionListener(e -> {
-			ProzorPregledaKnjigaRecepata prozorPregledaKnjigaRecepata = new ProzorPregledaKnjigaRecepata(aplikacija);
+			ProzorPregledaKnjigaRecepata prozorPregledaKnjigaRecepata = new ProzorPregledaKnjigaRecepata(aplikacija, new KontrolerProzoraPregledaKnjigaRecepata(aplikacija));
 		});
 
 		mnPregled.add(mntmLicniRecepti);
@@ -236,7 +236,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		        if (e.getClickCount() == 2) {
 		            // Double-click detected
 		            int index = list.locationToIndex(e.getPoint());
-		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazaniRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
+		            ProzorPrikazaRecepta prozor = new ProzorPrikazaRecepta((Recept)prikazaniRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
 		        }
 			}
 		});

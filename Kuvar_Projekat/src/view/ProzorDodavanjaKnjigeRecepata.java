@@ -29,6 +29,8 @@ import model.Recept;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class ProzorDodavanjaKnjigeRecepata implements Observer{
@@ -125,7 +127,7 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 		        if (e.getClickCount() == 2) {
 		            // Double-click detected
 		            int index = list.locationToIndex(e.getPoint());
-		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazRecepataPoglavlja.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
+		            ProzorPrikazaRecepta prozor = new ProzorPrikazaRecepta((Recept)prikazRecepataPoglavlja.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
 		        }
 			}
 		});
@@ -143,7 +145,7 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 		        if (e.getClickCount() == 2) {
 		            // Double-click detected
 		            int index = list.locationToIndex(e.getPoint());
-		            ProzorPikazaRecepta prozor = new ProzorPikazaRecepta((Recept)prikazSviRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
+		            ProzorPrikazaRecepta prozor = new ProzorPrikazaRecepta((Recept)prikazSviRecepti.getElementAt(index), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
 		        }
 			}
 		});
@@ -152,7 +154,7 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 		lblPoglavljaKnjigeRecepata.setBounds(10, 11, 238, 14);
 		frame.getContentPane().add(lblPoglavljaKnjigeRecepata);
 		
-		JLabel lblReceptiUPoglavlju = new JLabel("Recepti u poglavlju");
+		JLabel lblReceptiUPoglavlju = new JLabel("Recepti u poglavlju:");
 		lblReceptiUPoglavlju.setBounds(290, 11, 238, 14);
 		frame.getContentPane().add(lblReceptiUPoglavlju);
 		
@@ -276,6 +278,7 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 		JButton btnOdustani = new JButton("Odustani");
 		btnOdustani.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ro();
 				frame.dispose();
 			}
 		});
@@ -290,13 +293,26 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 		JLabel lblUnesiteNazivKnjige = new JLabel("Unesite naziv knjige recepata:");
 		lblUnesiteNazivKnjige.setBounds(10, 488, 181, 14);
 		frame.getContentPane().add(lblUnesiteNazivKnjige);
+		
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                ro();
+                frame.dispose();
+            }
+        });
 	}
 	
 	private void initPregled(){
-		if(this.knjigaRecepata != null)
+		if(this.knjigaRecepata != null) {
+			this.kriterijumDodavanja = this.knjigaRecepata.getSekcijeRecepti();
 			for(Entry e: this.knjigaRecepata.getSekcijeRecepti().entrySet()) {
-				prikazPoglavlja.addElement(e.getKey());
+				prikazPoglavlja.addElement(e.getKey().toString());
 			}
+			textFieldNaziv.setText(this.knjigaRecepata.getNaziv());
+		}
 		else {
 			prikazPoglavlja.addElement("Poglavlje1");
 			kriterijumDodavanja.put("Poglavlje1", new ArrayList<>());
@@ -308,8 +324,13 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 			prikazSviRecepti.addAll(this.aplikacija.getTrenutniKorisnik().getRecepti());
 	}
 	
+	private void ro() {
+		aplikacija.menadzerKorisnika.removeObserver(this);
+	}
+	
 	public void updatePerformed(UpdateEvent e) {
 		JOptionPane.showMessageDialog(null, "Knjiga recepata je uspesno kreirana!");
+		ro();
 		frame.dispose();
 	}
 }

@@ -2,6 +2,7 @@ package main;
 
 import controller.KontrolerGlavnogProzora;
 import model.Aplikacija;
+import utility.DataGenerator;
 import utility.IDGenerator;
 import view.GlavniProzor;
 
@@ -17,6 +18,7 @@ public class Main {
 			f.mkdir();
 		IDGenerator.INSTANCE.deserialize();
 		Aplikacija aplikacija = new Aplikacija();
+		//DataGenerator.generisiPodatke(aplikacija);
 		aplikacija.setTrenutniKorisnik(aplikacija.getMenadzerKorisnika().getKorisnici().get(0));
 		//aplikacija.getTrenutniKorisnik().getOprema().add(aplikacija.getMenadzerOpreme().getOprema().get(0));
 		//aplikacija.getTrenutniKorisnik().getNamirnice().put(aplikacija.getMenadzerNamirnica().getNamirnice().get(0), new Posedovanje((float) 20, MernaJedinica.G));

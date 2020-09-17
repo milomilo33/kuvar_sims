@@ -184,14 +184,29 @@ public class Korisnik implements Serializable {
 		if(this.knjigeRecepata == null)
 			this.knjigeRecepata = new ArrayList<>();
 		else {
-			boolean nadjen = false;
-			for(KnjigaRecepata kr:this.knjigeRecepata)
-				if(naziv.equals(kr.getNaziv()))
-					nadjen = true;
-			if(nadjen)
-				throw new NumberFormatException();
+			int i=0;
+			for(KnjigaRecepata kr:this.knjigeRecepata) {
+				if(naziv.equals(kr.getNaziv())) {
+					this.knjigeRecepata.get(i).setSekcijeRecepti(sekcije);
+					break;
+				}
+				i++;
+			}
 		}
 		this.knjigeRecepata.add(new KnjigaRecepata(naziv, sekcije));
+	}
+	
+	public void obrisiKnjiguRecepata(KnjigaRecepata knjigaRecepata) {
+		this.knjigeRecepata.remove(knjigaRecepata);
+	}
+	
+	public void preimenujKnjiguRecepata(String naziv, KnjigaRecepata knjigaRecepata) {
+		int i=0;
+		for(KnjigaRecepata kr:this.knjigeRecepata) {
+			if(kr.equals(knjigaRecepata))
+				this.knjigeRecepata.get(i).setNaziv(naziv);
+			i++;
+		}
 	}
 	
 	@Override
