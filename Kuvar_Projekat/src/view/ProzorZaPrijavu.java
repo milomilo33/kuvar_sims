@@ -60,7 +60,6 @@ public class ProzorZaPrijavu extends JDialog implements Observer {
 		korisnickoImePolje.setBounds(104, 56, 228, 20);
 		korisnickoImePolje.setColumns(10);
 		initGUI();
-		setVisible(true);
 	}
 	
 	private void initGUI() {
@@ -99,7 +98,6 @@ public class ProzorZaPrijavu extends JDialog implements Observer {
 	
 	public void updatePerformed(UpdateEvent e) {
 		JOptionPane.showMessageDialog(null, "Uspesno ste prijavljeni.", "", JOptionPane.INFORMATION_MESSAGE);
-		this.dispose();
 	}
 	
 	class SubmitListener implements ActionListener {
@@ -112,6 +110,8 @@ public class ProzorZaPrijavu extends JDialog implements Observer {
 			String lozinka = String.valueOf(this.prozor.lozinkaPolje.getPassword());
 			try {
 				prozor.kontroler.prijaviKorisnika(korisnickoIme, lozinka);
+				ProzorZaPrijavu.this.aplikacija.getMenadzerKorisnika().removeObserver(ProzorZaPrijavu.this);
+				ProzorZaPrijavu.this.dispose();
 			} catch (IllegalArgumentException ex) {
 				JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
 			}

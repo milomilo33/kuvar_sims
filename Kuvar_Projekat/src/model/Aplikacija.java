@@ -197,8 +197,10 @@ public class Aplikacija {
 			notifyObservers();
 		}
 		
-		public void obrisiElementBookmarkovanja(ElementBookmarkovanja izabraniElement, Folder sadrzeciFolder) {
+		public void obrisiElementBookmarkovanja(ElementBookmarkovanja izabraniElement, Folder sadrzeciFolder, Folder folderSadrzecegFoldera) {
 			sadrzeciFolder.getElementi().remove(izabraniElement);
+			if (sadrzeciFolder.getElementi().isEmpty() && folderSadrzecegFoldera != null)
+				folderSadrzecegFoldera.getElementi().remove(sadrzeciFolder);
 			notifyObservers();
 		}
 		

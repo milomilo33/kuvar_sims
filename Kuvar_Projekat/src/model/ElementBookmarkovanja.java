@@ -1,5 +1,13 @@
 package model;
 
 public abstract class ElementBookmarkovanja {
-	public abstract void otvoriSe();
+	protected String naziv;
+	
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
 }

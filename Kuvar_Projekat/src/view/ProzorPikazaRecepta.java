@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import controller.KontrolerBookmarkovanja;
 import controller.KontrolerProzoraKomentarisanjaRecepta;
 import controller.KontrolerProzoraPrikazaRecepta;
 import event.Observer;
@@ -189,6 +190,18 @@ public class ProzorPikazaRecepta implements Observer{
 		btnBookmarkuj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//OVDE DODAJ ZA BOOKMARKE STVAR, imas atribute [aplikacija] i [recept]-recept koji se bookmarkuje
+				AtomicBoolean pronadjen = new AtomicBoolean(false);
+				aplikacija.getTrenutniKorisnik().proveriReceptBookmarkovan(recept, pronadjen);
+				if (pronadjen.get()) {
+					JOptionPane.showMessageDialog(null, "Recept je vec bookmarkovan!", "Greska", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				aplikacija.menadzerKorisnika.removeObserver(ProzorPikazaRecepta.this);
+				KontrolerBookmarkovanja kontrolerBookmarkovanja = new KontrolerBookmarkovanja(aplikacija);
+				ProzorBookmarkovanja prozorBookmarkovanja = new ProzorBookmarkovanja(aplikacija, kontrolerBookmarkovanja, recept, true);
+				prozorBookmarkovanja.setModal(true);
+				prozorBookmarkovanja.setVisible(true);
+				aplikacija.menadzerKorisnika.addObserver(ProzorPikazaRecepta.this);
 			}
 		});
 		btnBookmarkuj.setBounds(576, 372, 181, 23);

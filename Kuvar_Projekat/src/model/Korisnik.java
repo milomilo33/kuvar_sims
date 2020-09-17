@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("serial")
 public class Korisnik implements Serializable {
@@ -192,6 +193,30 @@ public class Korisnik implements Serializable {
 				throw new NumberFormatException();
 		}
 		this.knjigeRecepata.add(new KnjigaRecepata(naziv, sekcije));
+	}
+	
+	public void proveriReceptBookmarkovan(Recept recept, AtomicBoolean pronadjen) {
+		if (this.elementiBookmarkovanja == null) {
+			pronadjen.set(false);
+			return;
+		}
+		proveriReceptBookmarkovanRecursive(recept, pronadjen, this.elementiBookmarkovanja);
+	}
+	
+	public void proveriReceptBookmarkovanRecursive(Recept recept, AtomicBoolean pronadjen, List<ElementBookmarkovanja> elementi) {
+		if (!pronadjen.get() && elementi != null) {
+			for (ElementBookmarkovanja eb : elementi) {
+				if (pronadjen.get())
+					return;
+				if (eb instanceof Bookmark)
+					if (((Bookmark) eb).getRecept() == recept) {
+						pronadjen.set(true);
+						return;
+					}
+				if (eb instanceof Folder)
+					proveriReceptBookmarkovanRecursive(recept, pronadjen, ((Folder) eb).getElementi());
+			}
+		}
 	}
 	
 	@Override

@@ -65,14 +65,7 @@ public class GlavniProzor extends JFrame implements Observer{
 	private JTextField textFieldVremePripreme;
 	private final JList listRecepata = new JList(prikazaniRecepti);
 	
-
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public GlavniProzor(Aplikacija aplikacija, KontrolerGlavnogProzora kontroler) {
 		setResizable(false);
 		txtNazivRecepta.setBounds(212, 90, 368, 27);
@@ -91,46 +84,83 @@ public class GlavniProzor extends JFrame implements Observer{
 	private void initGUI() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 861, 660);
+		
+		aplikacija.setTrenutniKorisnik(null);
 
 		setJMenuBar(menuBar);
 
 		menuBar.add(mnDodavanje);
 
 		mnDodavanje.add(mntmDodajRecept);
-		mntmDodajRecept.addActionListener(e -> new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija)));
+		mntmDodajRecept.addActionListener(e -> {
+			if (proveriUlogovan())
+				new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija));
+		});
 
-		mnDodavanje.add(mntmDodajNamirnice);
+		mnDodavanje.add(mntmDodajNamirnice).addActionListener(e -> {
+			//if (proveriUlogovan())
+			
+		});
 
-		mnDodavanje.add(mntmDodajOpremu);
+		mnDodavanje.add(mntmDodajOpremu).addActionListener(e -> {
+			//if (proveriUlogovan())
+			
+		});
 
 		mnDodavanje.add(mntmDodajKnjiguRecepata).addActionListener(e -> {
-			ProzorDodavanjaKnjigeRecepata prozorDodavanjaKnjigeRecepata = new ProzorDodavanjaKnjigeRecepata(aplikacija, null, new KontrolerProzoraDodavanjaKnjigeRecepata(aplikacija));
+			if (proveriUlogovan()) {
+				ProzorDodavanjaKnjigeRecepata prozorDodavanjaKnjigeRecepata = new ProzorDodavanjaKnjigeRecepata(aplikacija, null, new KontrolerProzoraDodavanjaKnjigeRecepata(aplikacija));
+			}
 		});
 
 		mnDodavanje.add(mntmDodajKategoriju);
-		mntmDodajKategoriju.addActionListener(e -> new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija)));
+		mntmDodajKategoriju.addActionListener(e -> {
+			if (proveriUlogovan())
+				new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija));
+		});
 
 		menuBar.add(mnPregled);
 
 		mnPregled.add(mntmNajpopularnijiRecepti);
-		mntmNajpopularnijiRecepti.addActionListener(e -> new ProzorPrikazaListeRecepata(aplikacija, false));
+		mntmNajpopularnijiRecepti.addActionListener(e -> {
+			if (proveriUlogovan())
+				new ProzorPrikazaListeRecepata(aplikacija, false);
+		});
 
-		mnPregled.add(mntmBookmarkovi);
+		mnPregled.add(mntmBookmarkovi).addActionListener(e -> {
+			if (proveriUlogovan()) {
+				aplikacija.menadzerKorisnika.removeObserver(GlavniProzor.this);
+				ProzorBookmarkovanja prozorBookmarkovanja = new ProzorBookmarkovanja(aplikacija, new KontrolerBookmarkovanja(aplikacija), null, false);
+				prozorBookmarkovanja.setModal(true);
+				prozorBookmarkovanja.setVisible(true);
+				aplikacija.menadzerKorisnika.addObserver(GlavniProzor.this);
+			}
+		});
 
 		mnPregled.add(mntmKnjigeRecepata).addActionListener(e -> {
-			ProzorPregledaKnjigaRecepata prozorPregledaKnjigaRecepata = new ProzorPregledaKnjigaRecepata(aplikacija);
+			if (proveriUlogovan()) {
+				ProzorPregledaKnjigaRecepata prozorPregledaKnjigaRecepata = new ProzorPregledaKnjigaRecepata(aplikacija);
+			}
 		});
 
 		mnPregled.add(mntmLicniRecepti);
-		mntmLicniRecepti.addActionListener(e -> new ProzorPrikazaListeRecepata(aplikacija, true));
+		mntmLicniRecepti.addActionListener(e -> {
+			if (proveriUlogovan())
+				new ProzorPrikazaListeRecepata(aplikacija, true);
+		});
 
 		mnPregled.add(mntmPregledPretplacenih);
 		mntmPregledPretplacenih.addActionListener(e -> {// prikaz liste pretplacenih
-			ProzorPregledaPretplacenih prozorPregledaPretplacenih = new ProzorPregledaPretplacenih(aplikacija);
+			if (proveriUlogovan()) {
+				ProzorPregledaPretplacenih prozorPregledaPretplacenih = new ProzorPregledaPretplacenih(aplikacija);
+			}
 		});
 
 		mnPregled.add(mntmProfil);
-		mntmProfil.addActionListener(e -> new ProzorProfilaKorisnika(aplikacija, new KontrolerProzorProfilaKorisnika(aplikacija)));
+		mntmProfil.addActionListener(e -> {
+			if (proveriUlogovan())
+				new ProzorProfilaKorisnika(aplikacija, new KontrolerProzorProfilaKorisnika(aplikacija));
+		});
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -238,12 +268,28 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 		btnPrijava.addActionListener(new ActionListener() {//pritisnuto dugme prijava
 			public void actionPerformed(ActionEvent e) {
+				aplikacija.menadzerKorisnika.removeObserver(GlavniProzor.this);
 				ProzorZaPrijavu prozorZaPrijavu = new ProzorZaPrijavu(aplikacija, new KontrolerPrijave(aplikacija));
+				prozorZaPrijavu.setModal(true);
+				prozorZaPrijavu.setVisible(true);
+				aplikacija.menadzerKorisnika.addObserver(GlavniProzor.this);
+				
+				if (aplikacija.getTrenutniKorisnik() != null) {
+					lblDobroDosli.setText(lblDobroDosli.getText() + aplikacija.getTrenutniKorisnik());
+					lblUkolikoNemateNalog.setVisible(false);
+					btnOdjaviSe.setVisible(true);
+					btnPrijava.setVisible(false);
+					btnRegistracija.setVisible(false);
+				}
 			}
 		});
 		btnRegistracija.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				aplikacija.menadzerKorisnika.removeObserver(GlavniProzor.this);
 				ProzorZaRegistraciju prozorZaRegistraciju = new ProzorZaRegistraciju(aplikacija, new KontrolerRegistracije(aplikacija));
+				prozorZaRegistraciju.setModal(true);
+				prozorZaRegistraciju.setVisible(true);
+				aplikacija.menadzerKorisnika.addObserver(GlavniProzor.this);
 			}
 		});
 		scrollPaneRecepti.setBounds(212, 128, 368, 339);
@@ -263,6 +309,16 @@ public class GlavniProzor extends JFrame implements Observer{
 		lblDobroDosli.setBounds(249, 13, 177, 14);
 		contentPane.add(lblDobroDosli);
 		btnOdjaviSe.setBounds(667, 9, 102, 23);
+		btnOdjaviSe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aplikacija.setTrenutniKorisnik(null);
+				lblDobroDosli.setText("Dobro dosli, ");
+				lblUkolikoNemateNalog.setVisible(true);
+				btnOdjaviSe.setVisible(false);
+				btnPrijava.setVisible(true);
+				btnRegistracija.setVisible(true);
+			}
+		});
 		contentPane.add(btnOdjaviSe);
 		
 		JButton btnPretrazi = new JButton("Pretrazi");
@@ -322,6 +378,15 @@ public class GlavniProzor extends JFrame implements Observer{
 		
 		scrollPaneOprema.setViewportView(listOprema);
 	}
+	
+	public Boolean proveriUlogovan() {
+		if (aplikacija.getTrenutniKorisnik() == null) {
+			JOptionPane.showMessageDialog(null, "Morate biti prijavljeni na sistem!", "Greska", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
 	public void updatePerformed(UpdateEvent e) {
 		prikazaniRecepti.clear();
 		prikazaniRecepti.addAll(rezultatiPretrage);
