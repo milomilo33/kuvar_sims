@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -13,12 +12,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.util.List;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,18 +31,17 @@ import event.Observer;
 import event.UpdateEvent;
 import model.Aplikacija;
 import model.Aplikacija.MenadzerKorisnika;
-import model.Korisnik;
 import model.Mesec;
 import utility.DataGenerator;
 import utility.IDGenerator;
 import utility.KorisneMetode;
 
 @SuppressWarnings("serial")
-public class ProzorZaRegistraciju extends JFrame implements Observer {
+public class ProzorZaRegistraciju extends JDialog implements Observer {
 
 	private JPanel contentPane;
 	
-	private Aplikacija aplikacija;
+	Aplikacija aplikacija;
 	KontrolerRegistracije kontroler;
 
 	private final JLabel lblIme = new JLabel("Ime:");
@@ -105,7 +101,7 @@ public class ProzorZaRegistraciju extends JFrame implements Observer {
 		prezimePolje.setColumns(10);
 		imePolje.setColumns(10);
 		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 480, 710);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -258,18 +254,14 @@ public class ProzorZaRegistraciju extends JFrame implements Observer {
 	             prozor.aplikacija.getMenadzerKorisnika().removeObserver(prozor);
 	         }        
 	    }); 
-		setVisible(true);
 	}
 
 	public void updatePerformed(UpdateEvent e) {
 		Boolean uspesnoRegistrovan = ((MenadzerKorisnika) e.getSource()).getUspesnoRegistrovan();
 		if (!uspesnoRegistrovan)
 			JOptionPane.showMessageDialog(null, "Korisnik vec postoji!", "Greska", JOptionPane.ERROR_MESSAGE);
-		else {
+		else
 			JOptionPane.showMessageDialog(null, "Uspesno ste se registrovali.", "", JOptionPane.INFORMATION_MESSAGE);
-			this.aplikacija.getMenadzerKorisnika().removeObserver(this);
-			this.dispose();
-		}
 		
 		/*if (uspesnoRegistrovan) {
 			List<Korisnik> lista = aplikacija.getMenadzerKorisnika().getKorisnici();
@@ -355,7 +347,12 @@ class SubmitListener implements ActionListener {
 		
 		if (!shouldSubmit)
 			JOptionPane.showMessageDialog(null, "Pogresno uneseni podaci!", "Greska", JOptionPane.ERROR_MESSAGE);
-		else 
+		else {
 			prozorZaRegistraciju.kontroler.dodajNovogKorisnika(ime, prezime, datumRodjenja, korisnickoIme, lozinka, brojTelefona, adresa);
+			if (prozorZaRegistraciju.aplikacija.getMenadzerKorisnika().getUspesnoRegistrovan()) {
+				prozorZaRegistraciju.aplikacija.getMenadzerKorisnika().removeObserver(prozorZaRegistraciju);
+				prozorZaRegistraciju.dispose();
+			}
+		}
 	}
 }

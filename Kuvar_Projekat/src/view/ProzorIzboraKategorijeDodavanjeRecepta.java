@@ -26,13 +26,13 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
     public ProzorIzboraKategorijeDodavanjeRecepta(ProzorDodavanjaRecepta parent, Aplikacija aplikacija, ArrayList<Kategorija> dodateKategorije) {
         this.aplikacija = aplikacija;
         this.parent = parent;
-        this.linKategorije = new HashMap<Kategorija, Kategorija>();
+        this.linKategorije = new HashMap<>();
         this.kategorije = this.aplikacija.getMenadzerKategorija().getKategorije();
         for (Kategorija k : this.kategorije) {
             this.linKategorije.put(k, null);
         }
 
-        this.elementListeDodatihKategorija = new ArrayList<ElementListeDodatihKategorija>();
+        this.elementListeDodatihKategorija = new ArrayList<>();
         modelKategorije = new MyListModelKategorije(elementListeDodatihKategorija);
         for (Kategorija k : dodateKategorije)
             modelKategorije.addElement(new ElementListeDodatihKategorija(k, linKategorije));
@@ -70,9 +70,7 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
         treeKategorija.setEditable(true);
         for (Kategorija k : kategorije) parseKategorije(root, k);
         scrollPane.setViewportView(treeKategorija);
-        treeKategorija.addTreeSelectionListener(e -> {
-            selectedNode = (DefaultMutableTreeNode) treeKategorija.getLastSelectedPathComponent();
-        });
+        treeKategorija.addTreeSelectionListener(e -> selectedNode = (DefaultMutableTreeNode) treeKategorija.getLastSelectedPathComponent());
 
 
         JScrollPane scrollPane_1 = new JScrollPane();
@@ -110,9 +108,9 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
         btnDodaj.setBounds(10, 716, 89, 23);
         frame.getContentPane().add(btnDodaj);
         btnDodaj.addActionListener(e -> {
-            if (selectedNode != null) {
+            if (selectedNode != null)
                 modelKategorije.addElement(new ElementListeDodatihKategorija((Kategorija) selectedNode.getUserObject(), linKategorije));
-            }
+
         });
 
         expand();
@@ -141,9 +139,8 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
     }
 
     private void expand() {
-        for (int i = 0; i < treeKategorija.getRowCount(); i++) {
-            treeKategorija.expandRow(i);
-        }
+        for (int i = 0; i < treeKategorija.getRowCount(); i++) treeKategorija.expandRow(i);
+
     }
 
     class MyListModelKategorije extends AbstractListModel {

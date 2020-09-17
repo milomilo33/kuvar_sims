@@ -2,11 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Recept implements Serializable {
 	private Integer sifraRecepata;
@@ -89,7 +87,8 @@ public class Recept implements Serializable {
 		Integer suma = 0;
 		for (Komentar k : this.komentari)
 			suma += k.getOcena();
-		return (float)suma / (float)this.komentari.size();
+		if (this.komentari.size() > 0) return (float) suma / (float) this.komentari.size();
+		else return (float) suma;
 	}
 
 	public Korisnik getAutor() {

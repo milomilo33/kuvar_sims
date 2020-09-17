@@ -112,8 +112,7 @@ public class ProzorDodavanjaRecepta {
         btnNamirnica.setBounds(28, 167, 134, 23);
         frmDodavanjeRecepta.getContentPane().add(btnNamirnica);
         btnNamirnica.addActionListener(e -> {
-            ProzorIzboraNamirnicaDodavanjeRecepta prozor = new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija,
-                    namirnice, merneJedinice, kolicine);
+             new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, namirnice, merneJedinice, kolicine);
             osveziNamirnice();
         });
 
@@ -129,7 +128,7 @@ public class ProzorDodavanjaRecepta {
         btnOprema.setBounds(815, 167, 120, 23);
         frmDodavanjeRecepta.getContentPane().add(btnOprema);
         btnOprema.addActionListener(e -> {
-            ProzorIzboraOpremeDodavanjeRecepta prozor = new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, oprema);
+            new ProzorIzboraOpremeDodavanjeRecepta(aplikacija, oprema);
             osveziOpremu();
         });
 
@@ -154,15 +153,23 @@ public class ProzorDodavanjaRecepta {
         JButton btnKategorije = new JButton("Kategorije");
         btnKategorije.setBounds(169, 642, 105, 23);
         frmDodavanjeRecepta.getContentPane().add(btnKategorije);
-        btnKategorije.addActionListener(e -> {
-            ProzorIzboraKategorijeDodavanjeRecepta prozor = new ProzorIzboraKategorijeDodavanjeRecepta(this, aplikacija, this.kategorije);
-        });
+        btnKategorije.addActionListener(e -> new ProzorIzboraKategorijeDodavanjeRecepta(this, aplikacija, this.kategorije));
 
         txKategorije = new JTextPane();
         txKategorije.setEditable(false);
         txKategorije.setBounds(278, 645, 527, 20);
         frmDodavanjeRecepta.getContentPane().add(txKategorije);
+
+        JButton btnDodajNovuNamirnicu = new JButton("Dodaj novu namirnicu");
+        btnDodajNovuNamirnicu.setBounds(169, 266, 162, 23);
+        frmDodavanjeRecepta.getContentPane().add(btnDodajNovuNamirnicu);
+
+        JButton btnDodajNovuOpremu = new JButton("Dodaj novu opremu");
+        btnDodajNovuOpremu.setBounds(643, 266, 162, 23);
+        frmDodavanjeRecepta.getContentPane().add(btnDodajNovuOpremu);
+
         btnOdustanak.addActionListener(e -> frmDodavanjeRecepta.dispose());
+
 
         frmDodavanjeRecepta.setVisible(true);
     }
