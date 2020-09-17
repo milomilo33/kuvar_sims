@@ -106,17 +106,11 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnDodavanje.add(mntmDodajOpremu).addActionListener(e -> {
-<<<<<<< HEAD
 			if (proveriUlogovan()) {
 				ProzorDodavanjaOpreme prozorDodavanjaOpreme = new ProzorDodavanjaOpreme(aplikacija, new KontrolerDodavanjaOpreme(aplikacija));
 				prozorDodavanjaOpreme.setModal(true);
 				prozorDodavanjaOpreme.setVisible(true);
 			}
-			
-=======
-			//if (proveriUlogovan())
-
->>>>>>> 8ec11fd5a1eb091d75de4cb0f67f3ddaf907e84e
 		});
 
 		mnDodavanje.add(mntmDodajKnjiguRecepata).addActionListener(e -> {
