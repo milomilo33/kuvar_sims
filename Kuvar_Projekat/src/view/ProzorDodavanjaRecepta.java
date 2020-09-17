@@ -1,10 +1,14 @@
 package view;
 
+import controller.KontrolerDodavanjaNamirnice;
+import controller.KontrolerDodavanjaOpreme;
 import controller.KontrolerProzoraDodavanjaRecepta;
 import model.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ProzorDodavanjaRecepta {
 
@@ -27,6 +31,7 @@ public class ProzorDodavanjaRecepta {
     private JTextPane txKategorije;
 
 
+
     public ProzorDodavanjaRecepta(Aplikacija aplikacija, KontrolerProzoraDodavanjaRecepta kontroler) {
         namirnice = new ArrayList<>();
         oprema = new ArrayList<>();
@@ -45,14 +50,6 @@ public class ProzorDodavanjaRecepta {
     public void osveziOpremu() {
         modelOprema.osvezi();
     }
-
-    public void osveziKategorije(ArrayList<Kategorija> kategorije) {
-        this.kategorije = new ArrayList<>(kategorije);
-        StringBuilder s = new StringBuilder();
-        for (Kategorija k : this.kategorije) s.append(" ").append(k.toString()).append(";");
-        txKategorije.setText(String.valueOf(s));
-    }
-
     /**
      * Initialize the contents of the frame.
      */
@@ -112,7 +109,7 @@ public class ProzorDodavanjaRecepta {
         btnNamirnica.setBounds(28, 167, 134, 23);
         frmDodavanjeRecepta.getContentPane().add(btnNamirnica);
         btnNamirnica.addActionListener(e -> {
-             new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, namirnice, merneJedinice, kolicine);
+            new ProzorIzboraNamirnicaDodavanjeRecepta(aplikacija, namirnice, merneJedinice, kolicine);
             osveziNamirnice();
         });
 
@@ -153,7 +150,7 @@ public class ProzorDodavanjaRecepta {
         JButton btnKategorije = new JButton("Kategorije");
         btnKategorije.setBounds(169, 642, 105, 23);
         frmDodavanjeRecepta.getContentPane().add(btnKategorije);
-        btnKategorije.addActionListener(e -> new ProzorIzboraKategorijeDodavanjeRecepta(this, aplikacija, this.kategorije));
+        btnKategorije.addActionListener(e -> new ProzorIzboraKategorijeDodavanjeRecepta(aplikacija, this.kategorije, txKategorije));
 
         txKategorije = new JTextPane();
         txKategorije.setEditable(false);
@@ -161,10 +158,24 @@ public class ProzorDodavanjaRecepta {
         frmDodavanjeRecepta.getContentPane().add(txKategorije);
 
         JButton btnDodajNovuNamirnicu = new JButton("Dodaj novu namirnicu");
+        btnDodajNovuNamirnicu.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				ProzorDodavanjaNamirnice prozorDodavanjaNamirnice = new ProzorDodavanjaNamirnice(aplikacija, new KontrolerDodavanjaNamirnice(aplikacija));
+				prozorDodavanjaNamirnice.setModal(true);
+				prozorDodavanjaNamirnice.setVisible(true);
+        	}
+        });
         btnDodajNovuNamirnicu.setBounds(169, 266, 162, 23);
         frmDodavanjeRecepta.getContentPane().add(btnDodajNovuNamirnicu);
 
         JButton btnDodajNovuOpremu = new JButton("Dodaj novu opremu");
+        btnDodajNovuOpremu.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				ProzorDodavanjaOpreme prozorDodavanjaOpreme = new ProzorDodavanjaOpreme(aplikacija, new KontrolerDodavanjaOpreme(aplikacija));
+				prozorDodavanjaOpreme.setModal(true);
+				prozorDodavanjaOpreme.setVisible(true);
+        	}
+        });
         btnDodajNovuOpremu.setBounds(643, 266, 162, 23);
         frmDodavanjeRecepta.getContentPane().add(btnDodajNovuOpremu);
 

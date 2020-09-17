@@ -53,7 +53,7 @@ public class GlavniProzor extends JFrame implements Observer{
 	private final JMenuItem mntmDodajNamirnice = new JMenuItem("Dodaj namirnice");
 	private final JMenuItem mntmDodajOpremu = new JMenuItem("Dodaj opremu");
 	private final JMenuItem mntmDodajKnjiguRecepata = new JMenuItem("Dodaj knjigu recepata");
-	private final JMenuItem mntmDodajKategoriju = new JMenuItem("Izmeni kategorije");
+	private final JMenuItem mntmIzmeniKategoriju = new JMenuItem("Izmeni kategorije");
 	private final JMenuItem mntmBookmarkovi = new JMenuItem("Bookmarkovi");
 	private final JMenuItem mntmKnjigeRecepata = new JMenuItem("Knjige recepata");
 	private final JMenuItem mntmLicniRecepti = new JMenuItem("Licni recepti");
@@ -99,13 +99,19 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnDodavanje.add(mntmDodajNamirnice).addActionListener(e -> {
-			//if (proveriUlogovan())
-			
+			if (proveriUlogovan()) {
+				ProzorDodavanjaNamirnice prozorDodavanjaNamirnice = new ProzorDodavanjaNamirnice(aplikacija, new KontrolerDodavanjaNamirnice(aplikacija));
+				prozorDodavanjaNamirnice.setModal(true);
+				prozorDodavanjaNamirnice.setVisible(true);
+			}
 		});
 
 		mnDodavanje.add(mntmDodajOpremu).addActionListener(e -> {
-			//if (proveriUlogovan())
-			
+			if (proveriUlogovan()) {
+				ProzorDodavanjaOpreme prozorDodavanjaOpreme = new ProzorDodavanjaOpreme(aplikacija, new KontrolerDodavanjaOpreme(aplikacija));
+				prozorDodavanjaOpreme.setModal(true);
+				prozorDodavanjaOpreme.setVisible(true);
+			}
 		});
 
 		mnDodavanje.add(mntmDodajKnjiguRecepata).addActionListener(e -> {
@@ -114,9 +120,10 @@ public class GlavniProzor extends JFrame implements Observer{
 			}
 		});
 
-		mnDodavanje.add(mntmDodajKategoriju);
-		mntmDodajKategoriju.addActionListener(e -> {
-			if (proveriUlogovan())
+		mnDodavanje.add(mntmIzmeniKategoriju);
+		mntmIzmeniKategoriju.addActionListener(e -> {
+			if (proveriUlogovan() && this.aplikacija.getTrenutniKorisnik().getUloga().equals(Uloga.MODERATOR))
+
 				new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija));
 		});
 
@@ -124,8 +131,11 @@ public class GlavniProzor extends JFrame implements Observer{
 
 		mnPregled.add(mntmNajpopularnijiRecepti);
 		mntmNajpopularnijiRecepti.addActionListener(e -> {
-			if (proveriUlogovan())
+			if (proveriUlogovan()) {
+				this.aplikacija.getMenadzerRecepata().removeObserver(this);
 				new ProzorPrikazaListeRecepata(aplikacija, false);
+				this.aplikacija.getMenadzerRecepata().addObserver(this);
+			}
 		});
 
 		mnPregled.add(mntmBookmarkovi).addActionListener(e -> {
@@ -146,8 +156,11 @@ public class GlavniProzor extends JFrame implements Observer{
 
 		mnPregled.add(mntmLicniRecepti);
 		mntmLicniRecepti.addActionListener(e -> {
-			if (proveriUlogovan())
+			if (proveriUlogovan()) {
+				this.aplikacija.getMenadzerRecepata().removeObserver(this);
 				new ProzorPrikazaListeRecepata(aplikacija, true);
+				this.aplikacija.getMenadzerRecepata().addObserver(this);
+			}
 		});
 
 		mnPregled.add(mntmPregledPretplacenih);
@@ -370,19 +383,21 @@ public class GlavniProzor extends JFrame implements Observer{
 		JScrollPane scrollPaneKategorije = new JScrollPane();
 		scrollPaneKategorije.setBounds(10, 210, 193, 100);
 		panel_1.add(scrollPaneKategorije);
-		
-		
+
+
 		scrollPaneKategorije.setViewportView(listKategorije);
-		
+
 		JLabel lblOprema_1 = new JLabel("Oprema:");
 		lblOprema_1.setBounds(10, 338, 77, 14);
 		panel_1.add(lblOprema_1);
-		
+
 		JScrollPane scrollPaneOprema = new JScrollPane();
 		scrollPaneOprema.setBounds(10, 363, 193, 100);
 		panel_1.add(scrollPaneOprema);
-		
-		
+
+		btnKategorije.addActionListener(e -> new ProzorIzboraKategorijeDodavanjeRecepta(this.aplikacija, (ArrayList<Kategorija>) this.kriterijumPretrageKategorije, this.filterKategorije));
+
+
 		scrollPaneOprema.setViewportView(listOprema);
 		
 		ukljuciPreference.setBounds(212, 128 + 339 + 10 , 368, 70);

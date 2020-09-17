@@ -16,16 +16,19 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
     private ArrayList<Kategorija> kategorije;
     private DefaultTreeModel treeModel;
     private DefaultMutableTreeNode selectedNode;
+    private ArrayList<Kategorija> dodateKategorije;
     private JTree treeKategorija;
     private HashMap<Kategorija, Kategorija> linKategorije;
     private ArrayList<ElementListeDodatihKategorija> elementListeDodatihKategorija;
-    private ProzorDodavanjaRecepta parent;
     private MyListModelKategorije modelKategorije;
+    private DefaultListModel<Kategorija> listModel;
+    private JTextPane textPane;
 
 
-    public ProzorIzboraKategorijeDodavanjeRecepta(ProzorDodavanjaRecepta parent, Aplikacija aplikacija, ArrayList<Kategorija> dodateKategorije) {
+    public ProzorIzboraKategorijeDodavanjeRecepta(Aplikacija aplikacija, ArrayList<Kategorija> dodateKategorije, JTextPane textPane) {
+        this.listModel = null;
+        this.textPane = textPane;
         this.aplikacija = aplikacija;
-        this.parent = parent;
         this.linKategorije = new HashMap<>();
         this.kategorije = this.aplikacija.getMenadzerKategorija().getKategorije();
         for (Kategorija k : this.kategorije) {
@@ -36,7 +39,25 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
         modelKategorije = new MyListModelKategorije(elementListeDodatihKategorija);
         for (Kategorija k : dodateKategorije)
             modelKategorije.addElement(new ElementListeDodatihKategorija(k, linKategorije));
+        this.dodateKategorije = dodateKategorije;
+        initialize();
+    }
 
+    public ProzorIzboraKategorijeDodavanjeRecepta(Aplikacija aplikacija, ArrayList<Kategorija> dodateKategorije, DefaultListModel<Kategorija> listModel) {
+        this.listModel = listModel;
+        this.textPane = null;
+        this.aplikacija = aplikacija;
+        this.linKategorije = new HashMap<>();
+        this.kategorije = this.aplikacija.getMenadzerKategorija().getKategorije();
+        for (Kategorija k : this.kategorije) {
+            this.linKategorije.put(k, null);
+        }
+
+        this.elementListeDodatihKategorija = new ArrayList<>();
+        modelKategorije = new MyListModelKategorije(elementListeDodatihKategorija);
+        for (Kategorija k : dodateKategorije)
+            modelKategorije.addElement(new ElementListeDodatihKategorija(k, linKategorije));
+        this.dodateKategorije = dodateKategorije;
         initialize();
     }
 
@@ -88,11 +109,19 @@ public class ProzorIzboraKategorijeDodavanjeRecepta {
         btnZavrsi.setBounds(261, 716, 89, 23);
         frame.getContentPane().add(btnZavrsi);
         btnZavrsi.addActionListener(e -> {
-            ArrayList<Kategorija> kategorije = new ArrayList<>();
+            dodateKategorije.clear();
             for (ElementListeDodatihKategorija el : this.elementListeDodatihKategorija) {
-                kategorije.add(el.kategorija);
+                dodateKategorije.add(el.kategorija);
             }
-            parent.osveziKategorije(kategorije);
+            if (textPane != null) {
+                StringBuilder s = new StringBuilder();
+                for (Kategorija k : this.dodateKategorije) s.append(" ").append(k.toString()).append(";");
+                this.textPane.setText(String.valueOf(s));
+            } else {
+                listModel.clear();
+                listModel.addAll(this.dodateKategorije);
+            }
+
             frame.dispose();
         });
 
