@@ -215,7 +215,7 @@ public class ProzorBookmarkovanja extends JDialog implements Observer, TreeSelec
 				KontrolerProzoraPrikazaRecepta kontroler = new KontrolerProzoraPrikazaRecepta(aplikacija);
 				//	possibly:
 				aplikacija.getMenadzerKorisnika().removeObserver(ProzorBookmarkovanja.this);
-				ProzorPikazaRecepta prozor = new ProzorPikazaRecepta(recept, aplikacija, kontroler);
+				ProzorPrikazaRecepta prozor = new ProzorPrikazaRecepta(recept, aplikacija, kontroler);
 				aplikacija.getMenadzerKorisnika().addObserver(ProzorBookmarkovanja.this);
 				//dispose();
 			}

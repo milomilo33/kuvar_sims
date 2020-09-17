@@ -63,7 +63,7 @@ public class ProzorPrikazaListeRecepata implements Observer {
                 MyTableModelRecepti tableModel = (MyTableModelRecepti) table.getModel();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    new ProzorPikazaRecepta(tableModel.getReceptAtRow(row), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
+                    new ProzorPrikazaRecepta(tableModel.getReceptAtRow(row), aplikacija, new KontrolerProzoraPrikazaRecepta(aplikacija));
                 }
             }
         });

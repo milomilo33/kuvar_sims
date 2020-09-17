@@ -199,12 +199,12 @@ public class ProzorPrikazaRecepta implements Observer{
 					JOptionPane.showMessageDialog(null, "Recept je vec bookmarkovan!", "Greska", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				aplikacija.menadzerKorisnika.removeObserver(ProzorPikazaRecepta.this);
+				aplikacija.menadzerKorisnika.removeObserver(ProzorPrikazaRecepta.this);
 				KontrolerBookmarkovanja kontrolerBookmarkovanja = new KontrolerBookmarkovanja(aplikacija);
 				ProzorBookmarkovanja prozorBookmarkovanja = new ProzorBookmarkovanja(aplikacija, kontrolerBookmarkovanja, recept, true);
 				prozorBookmarkovanja.setModal(true);
 				prozorBookmarkovanja.setVisible(true);
-				aplikacija.menadzerKorisnika.addObserver(ProzorPikazaRecepta.this);
+				aplikacija.menadzerKorisnika.addObserver(ProzorPrikazaRecepta.this);
 			}
 		});
 		btnBookmarkuj.setBounds(576, 372, 181, 23);
