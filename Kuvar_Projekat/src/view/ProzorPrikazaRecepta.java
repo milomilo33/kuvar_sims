@@ -12,17 +12,21 @@ import controller.KontrolerProzoraPrikazaRecepta;
 import event.Observer;
 import event.UpdateEvent;
 import model.Aplikacija;
+import model.Namirnica;
 import model.Recept;
+import model.Sastojanje;
 
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.event.ActionEvent;
 
@@ -111,8 +115,12 @@ public class ProzorPrikazaRecepta implements Observer{
 		scrollPaneNamirnice.setBounds(10, 125, 231, 159);
 		frmRecept.getContentPane().add(scrollPaneNamirnice);
 		
-		JList listNamirnice = new JList(this.recept.getNamirniceSaSastojanjem().keySet().toArray());
+		DefaultListModel ltmp = new DefaultListModel();
+		JList listNamirnice = new JList(ltmp);
 		scrollPaneNamirnice.setViewportView(listNamirnice);
+		for(Map.Entry<Namirnica, Sastojanje> entry: this.recept.getNamirniceSaSastojanjem().entrySet()) {
+			ltmp.addElement((entry.getKey().toString() + "   " + entry.getValue().getKolicina() + entry.getValue().getMernaJedinica()));
+		}
 		
 		JScrollPane scrollPaneOprema = new JScrollPane();
 		scrollPaneOprema.setBounds(278, 125, 241, 159);

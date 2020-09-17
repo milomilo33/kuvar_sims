@@ -133,7 +133,7 @@ public class Recept implements Serializable {
 	public void dodajNamirnicuSaSastojanjem(Namirnica n, Sastojanje s) {
 		this.namirniceSaSastojanjem.put(n, s);
 	}
-	public Boolean proveraKriterijuma(String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme) {
+	public Boolean proveraKriterijuma(String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme, Map<Namirnica, Posedovanje> namirniceSaPosedovanjem) {
 		Boolean receptProveren = true;
 		if(!this.naziv.contains(naziv))
 			receptProveren = false;
@@ -164,6 +164,29 @@ public class Recept implements Serializable {
 			receptProveren = false;
 		if(this.vremePripreme > vremePripreme)
 			receptProveren = false;
+		if(namirniceSaPosedovanjem != null) {
+			List<Namirnica> tmp = new ArrayList<>();
+			for(Map.Entry<Namirnica, Sastojanje> entry: this.namirniceSaSastojanjem.entrySet())
+				tmp.add(entry.getKey());
+			for(Map.Entry<Namirnica, Posedovanje> entry1: namirniceSaPosedovanjem.entrySet())
+				if(tmp.contains(entry1.getKey())) {
+					float val1 = 0, val2 = 0;
+					if(entry1.getValue().getMernaJedinica().equals(MernaJedinica.KG))
+						val1 += entry1.getValue().getKolicina()*1000000;
+					if(entry1.getValue().getMernaJedinica().equals(MernaJedinica.G))
+						val1 += entry1.getValue().getKolicina()*1000;
+					if(entry1.getValue().getMernaJedinica().equals(MernaJedinica.MG))
+						val1 += entry1.getValue().getKolicina();
+					if(this.namirniceSaSastojanjem.get(entry1.getKey()).getMernaJedinica().equals(MernaJedinica.KG))
+						val2 += this.namirniceSaSastojanjem.get(entry1.getKey()).getKolicina()*1000000;
+					if(this.namirniceSaSastojanjem.get(entry1.getKey()).getMernaJedinica().equals(MernaJedinica.G))
+						val2 += this.namirniceSaSastojanjem.get(entry1.getKey()).getKolicina()*1000;
+					if(this.namirniceSaSastojanjem.get(entry1.getKey()).getMernaJedinica().equals(MernaJedinica.MG))
+						val2 += this.namirniceSaSastojanjem.get(entry1.getKey()).getKolicina();
+					if(val1 > val2)
+						receptProveren = false;
+				}else receptProveren = false;		
+		}
 		return receptProveren;
 	}
 	@Override

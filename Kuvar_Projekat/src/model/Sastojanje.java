@@ -22,5 +22,4 @@ public class Sastojanje implements Serializable{
 	public void setMernaJedinica(MernaJedinica mernaJedinica) {
 		this.mernaJedinica = mernaJedinica;
 	}
-	
 }

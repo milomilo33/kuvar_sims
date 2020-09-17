@@ -240,6 +240,8 @@ public class Korisnik implements Serializable {
 	}
 	@Override
 	public boolean equals(Object o) {
+		if(o==null)
+			return false;
 		Korisnik c = (Korisnik)o;
 		return this.username.equals(c.getUsername());
 	}

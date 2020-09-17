@@ -295,9 +295,9 @@ public class Aplikacija {
 			return recepti;
 		}
 
-		public void pretraziRecepte(List<Recept> rezultatiPretrage, String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme) {
+		public void pretraziRecepte(List<Recept> rezultatiPretrage, String naziv, List<Kategorija> kategorije, List<Namirnica> namirnice, Tezina tezina, List<Oprema> oprema, Float vremePripreme, Map<Namirnica, Posedovanje> namirniceSaPosedovanjem) {
 			for (Recept recept : recepti)
-				if (recept.proveraKriterijuma(naziv, kategorije, namirnice, tezina, oprema, vremePripreme))
+				if (recept.proveraKriterijuma(naziv, kategorije, namirnice, tezina, oprema, vremePripreme, namirniceSaPosedovanjem))
 					dodajRezultatPretrage(recept, rezultatiPretrage);
 			notifyObservers();
 		}
@@ -307,7 +307,9 @@ public class Aplikacija {
 		}
 		
 		public boolean verifikacijaRecepta(Recept recept) {
-			return trenutniKorisnik.equals(recept.getAutor());
+			if(trenutniKorisnik == null)
+				return true;
+			return recept.getAutor().equals(trenutniKorisnik);
 		}
 			
 		@Override

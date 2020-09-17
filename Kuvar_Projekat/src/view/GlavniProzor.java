@@ -64,6 +64,7 @@ public class GlavniProzor extends JFrame implements Observer{
 	private final JMenuItem mntmNajpopularnijiRecepti = new JMenuItem("Najpopularniji recepti");
 	private JTextField textFieldVremePripreme;
 	private final JList listRecepata = new JList(prikazaniRecepti);
+	private JCheckBox ukljuciPreference = new JCheckBox("Ukljuci personalne preference u pretragu");
 	
 	
 	public GlavniProzor(Aplikacija aplikacija, KontrolerGlavnogProzora kontroler) {
@@ -325,8 +326,14 @@ public class GlavniProzor extends JFrame implements Observer{
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // salje kontroleru pretragu
 				try {
-					kontroler.pretraziRecepte(rezultatiPretrage, txtNazivRecepta.getText(), kriterijumPretrageKategorije,
-							kriterijumPretrageNamirnice, (Tezina)comboBox.getSelectedItem(), kriterijumPretrageOprema, textFieldVremePripreme.getText());
+					if(ukljuciPreference.isSelected()) {
+						if(aplikacija.getTrenutniKorisnik().getOprema() != null)
+							kriterijumPretrageOprema.addAll(aplikacija.getTrenutniKorisnik().getOprema());
+						kontroler.pretraziRecepte(rezultatiPretrage, txtNazivRecepta.getText(), kriterijumPretrageKategorije,
+							kriterijumPretrageNamirnice, (Tezina)comboBox.getSelectedItem(), kriterijumPretrageOprema, textFieldVremePripreme.getText(), aplikacija.getTrenutniKorisnik().getNamirnice());
+					}else
+						kontroler.pretraziRecepte(rezultatiPretrage, txtNazivRecepta.getText(), kriterijumPretrageKategorije,
+								kriterijumPretrageNamirnice, (Tezina)comboBox.getSelectedItem(), kriterijumPretrageOprema, textFieldVremePripreme.getText(), null);
 				}catch(NumberFormatException ex){
 					JOptionPane.showMessageDialog(null, "Vreme pripreme mora biti decimalni broj!");
 				}
@@ -377,6 +384,10 @@ public class GlavniProzor extends JFrame implements Observer{
 		
 		
 		scrollPaneOprema.setViewportView(listOprema);
+		
+		ukljuciPreference.setBounds(212, 128 + 339 + 10 , 368, 70);
+		ukljuciPreference.setVisible(true);
+		contentPane.add(ukljuciPreference);
 	}
 	
 	public Boolean proveriUlogovan() {
