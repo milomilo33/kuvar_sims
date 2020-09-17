@@ -382,6 +382,11 @@ public class Aplikacija {
 		public ArrayList<Namirnica> getNamirnice() {
 			return this.namirnice;
 		}
+		
+		public void dodajNamirnicu(String naziv) {
+			Integer sifraNamirnice = IDGenerator.INSTANCE.requestID();
+			this.namirnice.add(new Namirnica(sifraNamirnice, naziv));
+		}
 	}
 
 	public class MenadzerKategorija implements Publisher {
@@ -545,6 +550,11 @@ public class Aplikacija {
 		
 		public ArrayList<Oprema> getOprema(){
 			return oprema;
+		}
+		
+		public void dodajOpremu(String naziv) {
+			Integer sifraOpreme = IDGenerator.INSTANCE.requestID();
+			this.oprema.add(new Oprema(sifraOpreme, naziv));
 		}
 	}
 
