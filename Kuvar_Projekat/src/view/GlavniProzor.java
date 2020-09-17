@@ -53,7 +53,7 @@ public class GlavniProzor extends JFrame implements Observer{
 	private final JMenuItem mntmDodajNamirnice = new JMenuItem("Dodaj namirnice");
 	private final JMenuItem mntmDodajOpremu = new JMenuItem("Dodaj opremu");
 	private final JMenuItem mntmDodajKnjiguRecepata = new JMenuItem("Dodaj knjigu recepata");
-	private final JMenuItem mntmDodajKategoriju = new JMenuItem("Dodaj kategoriju");
+	private final JMenuItem mntmDodajKategoriju = new JMenuItem("Izmeni kategorije");
 	private final JMenuItem mntmBookmarkovi = new JMenuItem("Bookmarkovi");
 	private final JMenuItem mntmKnjigeRecepata = new JMenuItem("Knjige recepata");
 	private final JMenuItem mntmLicniRecepti = new JMenuItem("Licni recepti");
@@ -97,9 +97,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		menuBar.add(mnDodavanje);
 
 		mnDodavanje.add(mntmDodajRecept);
-		mntmDodajRecept.addActionListener(e -> {
-			ProzorDodavanjaRecepta prozorDodavanjaRecepta = new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija));
-		});
+		mntmDodajRecept.addActionListener(e -> new ProzorDodavanjaRecepta(aplikacija, new KontrolerProzoraDodavanjaRecepta(aplikacija)));
 
 		mnDodavanje.add(mntmDodajNamirnice);
 
@@ -110,13 +108,12 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnDodavanje.add(mntmDodajKategoriju);
-		mntmDodajKategoriju.addActionListener(e -> {
-			ProzorIzmeneKategorija prozorIzmeneKategorija = new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija));
-		});
+		mntmDodajKategoriju.addActionListener(e -> new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija)));
 
 		menuBar.add(mnPregled);
 
 		mnPregled.add(mntmNajpopularnijiRecepti);
+		mntmNajpopularnijiRecepti.addActionListener(e -> new ProzorPrikazaListeRecepata(aplikacija, false));
 
 		mnPregled.add(mntmBookmarkovi);
 
@@ -125,6 +122,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnPregled.add(mntmLicniRecepti);
+		mntmLicniRecepti.addActionListener(e -> new ProzorPrikazaListeRecepata(aplikacija, true));
 
 		mnPregled.add(mntmPregledPretplacenih);
 		mntmPregledPretplacenih.addActionListener(e -> {// prikaz liste pretplacenih
@@ -132,9 +130,7 @@ public class GlavniProzor extends JFrame implements Observer{
 		});
 
 		mnPregled.add(mntmProfil);
-		mntmProfil.addActionListener(e -> {
-			ProzorProfilaKorisnika prozor = new ProzorProfilaKorisnika(aplikacija, new KontrolerProzorProfilaKorisnika(aplikacija));
-		});
+		mntmProfil.addActionListener(e -> new ProzorProfilaKorisnika(aplikacija, new KontrolerProzorProfilaKorisnika(aplikacija)));
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

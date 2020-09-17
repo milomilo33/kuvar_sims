@@ -6,11 +6,7 @@ import utility.IDGenerator;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Aplikacija {
@@ -272,12 +268,16 @@ public class Aplikacija {
 				i.printStackTrace();
 			}
 		}
-		
-		public void dodajKomentar(String tekst, Date datum, Korisnik autor ,Integer ocena, Recept r, StringBuilder srOcena) {
+
+		public void dodajKomentar(String tekst, Date datum, Korisnik autor, Integer ocena, Recept r, StringBuilder srOcena) {
 			r.dodajKomentar(tekst, datum, autor, ocena);
 			srOcena.delete(0, srOcena.length());
 			srOcena.append(r.getSrednjaOcena().toString());
 			notifyObservers();
+		}
+
+		public void sortiraj() {
+			this.recepti.sort(Comparator.comparing(Recept::getSrednjaOcena).reversed());
 		}
 
 		private List<Observer> observers;
