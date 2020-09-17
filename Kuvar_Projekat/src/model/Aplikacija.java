@@ -166,6 +166,53 @@ public class Aplikacija {
 			korisnik.setOprema(oprema);
 			korisnik.setNamirnice(namirnice);
 		}
+		
+		public void kreirajDirektorijumDodajRecept(Folder trenutniDir, String nazivNoviDir, Recept recept) {
+			if (trenutniDir.getElementi() == null)
+				trenutniDir.setElementi(new ArrayList<ElementBookmarkovanja>());
+			if (trenutniDir.potfolderPostoji(nazivNoviDir))
+				throw new IllegalArgumentException("Direktorijum vec postoji!");
+			Folder noviDirektorijum = new Folder(nazivNoviDir);
+			noviDirektorijum.setElementi(new ArrayList<ElementBookmarkovanja>());
+			Bookmark bookmark = new Bookmark(recept);
+			noviDirektorijum.dodajElement(bookmark);
+			trenutniDir.dodajElement(noviDirektorijum);
+			notifyObservers();
+		}
+		
+		public void dodajReceptUDirektorijum(Folder trenutniDir, Recept recept) {
+			if (trenutniDir.getElementi() == null)
+				trenutniDir.setElementi(new ArrayList<ElementBookmarkovanja>());
+			Bookmark bookmark = new Bookmark(recept);
+			trenutniDir.dodajElement(bookmark);
+			notifyObservers();
+		}
+		
+		public void preimenujElementBookmarkovanja(ElementBookmarkovanja izabraniElement, String noviNaziv, Folder sadrzeciFolder) {
+			for (ElementBookmarkovanja eb : sadrzeciFolder.getElementi())
+				if (eb.getClass().equals(izabraniElement.getClass()))
+					if (eb.getNaziv().equals(noviNaziv)) {
+						if (eb instanceof Folder)
+							throw new IllegalArgumentException("Direktorijum sa tim nazivom vec postoji!");
+						else if (eb instanceof Bookmark)
+							throw new IllegalArgumentException("Bookmark sa tim nazivom vec postoji!");
+					}
+			izabraniElement.setNaziv(noviNaziv);
+			notifyObservers();
+		}
+		
+		public void obrisiElementBookmarkovanja(ElementBookmarkovanja izabraniElement, Folder sadrzeciFolder) {
+			sadrzeciFolder.getElementi().remove(izabraniElement);
+			notifyObservers();
+		}
+		
+		public Folder getRootDir() {
+			if (trenutniKorisnik.getElementiBookmarkovanja() == null)
+				trenutniKorisnik.setElementiBookmarkovanja(new ArrayList<ElementBookmarkovanja>());
+			if (trenutniKorisnik.getElementiBookmarkovanja().size() == 0)
+				trenutniKorisnik.getElementiBookmarkovanja().add(new Folder("Opsti direktorijum"));
+			return (Folder) trenutniKorisnik.getElementiBookmarkovanja().get(0);
+		}
 
 		private List<Observer> observers;
 
