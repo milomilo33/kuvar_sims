@@ -404,13 +404,17 @@ public class Aplikacija {
 			this.deserialize();
 		}
 
-		public void dodajKategoriju(Kategorija parent, String naziv) {
-			if (parent != null) {
-				for (Kategorija k : parent.getPotkategorije()) {
+		public void dodajKategoriju(Kategorija roditelj, String naziv) {
+			if (roditelj != null) {
+				for (Kategorija k : roditelj.getPotkategorije()) {
 					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
 				}
-				parent.getPotkategorije().add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
-			} else kategorije.add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
+				roditelj.getPotkategorije().add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
+			} else {
+				for (Kategorija k : this.kategorije)
+					if (k.getNaziv().equals(naziv)) throw new IllegalArgumentException();
+				kategorije.add(new Kategorija(IDGenerator.INSTANCE.requestID(), naziv, new ArrayList<>()));
+			}
 			notifyObservers();
 		}
 
