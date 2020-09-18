@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Folder extends ElementBookmarkovanja {
+public class Folder extends ElementBookmarkovanja implements Serializable {
 	private List<ElementBookmarkovanja> elementi;
 	public Folder(String naziv) {
 		// TODO Auto-generated constructor stub

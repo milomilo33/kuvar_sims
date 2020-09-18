@@ -4,6 +4,7 @@ import controller.*;
 import event.Observer;
 import event.UpdateEvent;
 import model.*;
+import utility.IDGenerator;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -13,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,8 +126,7 @@ public class GlavniProzor extends JFrame implements Observer{
 
 		mnDodavanje.add(mntmIzmeniKategoriju);
 		mntmIzmeniKategoriju.addActionListener(e -> {
-			if (proveriUlogovan() && this.aplikacija.getTrenutniKorisnik().getUloga().equals(Uloga.MODERATOR))
-
+			if (proveriUlogovan() && (this.aplikacija.getTrenutniKorisnik().getUloga().equals(Uloga.MODERATOR) || this.aplikacija.getTrenutniKorisnik().getUloga().equals(Uloga.ADMINISTRATOR)))
 				new ProzorIzmeneKategorija(aplikacija, new KontrolerProzorIzmeneKategorija(aplikacija));
 		});
 
@@ -403,6 +406,18 @@ public class GlavniProzor extends JFrame implements Observer{
 		ukljuciPreference.setBounds(212, 128 + 339 + 10 , 368, 70);
 		ukljuciPreference.setVisible(true);
 		contentPane.add(ukljuciPreference);
+		
+		this.addWindowListener(new WindowAdapter() {
+	         public void windowClosing(WindowEvent windowEvent){
+	        	 try {
+					aplikacija.sacuvajStanje();
+					IDGenerator.INSTANCE.serialize();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	         }        
+	    }); 
 	}
 	
 	public Boolean proveriUlogovan() {

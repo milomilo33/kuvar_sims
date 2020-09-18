@@ -19,15 +19,9 @@ public class Main {
 		IDGenerator.INSTANCE.deserialize();
 		Aplikacija aplikacija = new Aplikacija();
 		//DataGenerator.generisiPodatke(aplikacija);
-		//aplikacija.setTrenutniKorisnik(aplikacija.getMenadzerKorisnika().getKorisnici().get(0));
-		//aplikacija.getTrenutniKorisnik().getOprema().add(aplikacija.getMenadzerOpreme().getOprema().get(0));
-		//aplikacija.getTrenutniKorisnik().getNamirnice().put(aplikacija.getMenadzerNamirnica().getNamirnice().get(0), new Posedovanje((float) 20, MernaJedinica.G));
 		KontrolerGlavnogProzora kontroler = new KontrolerGlavnogProzora(aplikacija);
 		GlavniProzor prozor = new GlavniProzor(aplikacija, kontroler);
 		prozor.setVisible(true);
-		//DataGenerator.generisiPodatke(aplikacija);
-		aplikacija.sacuvajStanje();
-		IDGenerator.INSTANCE.serialize();
 	}
 }
 

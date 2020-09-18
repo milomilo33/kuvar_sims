@@ -340,7 +340,7 @@ public class Aplikacija {
 			HashMap<Namirnica, Sastojanje> namirnicaSastojanje = new HashMap<>();
 			for (int i = 0; i < namirnice.size(); ++i)
 				namirnicaSastojanje.put(namirnice.get(i), new Sastojanje(kolicine.get(i), merneJedinice.get(i)));
-			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, null, kategorije));
+			recepti.add(new Recept(IDGenerator.INSTANCE.requestID(), naziv, tezina, opis, vremePripreme, namirnicaSastojanje, trenutniKorisnik, opreme, new ArrayList<Komentar>(), kategorije));
 			trenutniKorisnik.dodajReceptKorisnika(recepti.get(recepti.size() - 1));
 			notifyObservers();
 			return true;

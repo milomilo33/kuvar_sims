@@ -1,6 +1,8 @@
 package model;
 
-public enum Mesec {
+import java.io.Serializable;
+
+public enum Mesec implements Serializable {
 	januar,
 	februar,
 	mart,

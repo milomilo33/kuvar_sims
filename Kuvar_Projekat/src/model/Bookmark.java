@@ -1,6 +1,8 @@
 package model;
 
-public class Bookmark extends ElementBookmarkovanja {
+import java.io.Serializable;
+
+public class Bookmark extends ElementBookmarkovanja implements Serializable {
 
 	private Recept recept;
 	

@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class KnjigaRecepata {
+public class KnjigaRecepata implements Serializable {
 	private String naziv;
 	private Map<String, List<Recept>>sekcijeRecepti;
 	public KnjigaRecepata() {}

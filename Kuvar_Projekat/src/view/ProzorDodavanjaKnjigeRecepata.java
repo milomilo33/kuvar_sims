@@ -265,6 +265,8 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 			public void actionPerformed(ActionEvent e) {//kreiranje knjige recepata zavrseno, dodaje aktivnom korisniku
 				try {
 					kontroler.dodajKnjiguRecepata(textFieldNaziv.getText(), kriterijumDodavanja);
+					ro();
+					frame.dispose();
 				}catch(NullPointerException ex) {
 					JOptionPane.showMessageDialog(null, "Niste uneli naziv/sadrzaj knjige recepata!");
 				}catch(NumberFormatException ex) {
@@ -330,7 +332,7 @@ public class ProzorDodavanjaKnjigeRecepata implements Observer{
 	
 	public void updatePerformed(UpdateEvent e) {
 		JOptionPane.showMessageDialog(null, "Knjiga recepata je uspesno kreirana!");
-		ro();
-		frame.dispose();
+		//ro();
+		//frame.dispose();
 	}
 }

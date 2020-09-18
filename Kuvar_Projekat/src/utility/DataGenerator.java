@@ -28,6 +28,8 @@ public class DataGenerator {
         for (int i = 0; i < 5; i++) {
             aplikacija.menadzerKorisnika.getKorisnici().add(new Korisnik("pera" + i, "peric" + i, LocalDate.now(), "supermario" + i, "super" + i, "tel" + i * i * i, "novi grad" + i));
         }
+        aplikacija.menadzerKorisnika.getKorisnici().get(0).setUloga(Uloga.MODERATOR);
+        aplikacija.menadzerKorisnika.getKorisnici().get(1).setUloga(Uloga.ADMINISTRATOR);
         aplikacija.setTrenutniKorisnik(aplikacija.menadzerKorisnika.getKorisnici().get(0));
 
 
@@ -41,16 +43,16 @@ public class DataGenerator {
                 int tempf = new Random().nextInt(4);
                 randK.add(new Komentar("komentar" + j, new Date(), aplikacija.menadzerKorisnika.getKorisnici().get(tempf), oc));
             }
-            List<Kategorija> randKat = new ArrayList<>();
-            for (int j = 0; j < pp; j++) {
-                randKat.add(new Kategorija(IDGenerator.INSTANCE.requestID(), "kategorija" + j, null));
-            }
+//            List<Kategorija> randKat = new ArrayList<>();
+//            for (int j = 0; j < pp; j++) {
+//                randKat.add(new Kategorija(IDGenerator.INSTANCE.requestID(), "kategorija" + j, null));
+//            }
             int temp = new Random().nextInt(5);
             HashMap<Namirnica, Sastojanje> namirnicaSastojanje = new HashMap<>();
             for (int j = 0; j < 10; ++j)
                 namirnicaSastojanje.put(aplikacija.menadzerNamirnica.getNamirnice().get(j), new Sastojanje((float) i * 5, MernaJedinica.values()[new Random().nextInt(MernaJedinica.values().length)]));
             Recept rr = new Recept(IDGenerator.INSTANCE.requestID(), "recept" + i, Tezina.values()[new Random().nextInt(Tezina.values().length)],
-                    "opis" + i, (float) i * 10, namirnicaSastojanje, aplikacija.menadzerKorisnika.getKorisnici().get(temp), aplikacija.menadzerOpreme.getOprema(), randK, randKat);
+                    "opis" + i, (float) i * 10, namirnicaSastojanje, aplikacija.menadzerKorisnika.getKorisnici().get(temp), aplikacija.menadzerOpreme.getOprema(), randK, aplikacija.menadzerKategorija.getKategorije().get(0).getPotkategorije());
             aplikacija.menadzerRecepata.getRecepti().add(rr);
             if(aplikacija.menadzerKorisnika.getKorisnici().get(temp).getRecepti() == null) {
             	aplikacija.menadzerKorisnika.getKorisnici().get(temp).setRecepti(new ArrayList<>());

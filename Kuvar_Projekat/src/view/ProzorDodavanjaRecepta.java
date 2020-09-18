@@ -136,6 +136,7 @@ public class ProzorDodavanjaRecepta {
             try {
                 kontroler.dodajRecept(txtNaziv.getText(), txtVreme.getText(), cmbTezina.getSelectedItem().toString(), namirnice, merneJedinice, kolicine, oprema, kategorije, txOpis.getText());
                 JOptionPane.showMessageDialog(null, "Recept uspesno dodat");
+                frmDodavanjeRecepta.dispose();
             } catch (IllegalArgumentException | NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Neispravni uneti elementi");
             }

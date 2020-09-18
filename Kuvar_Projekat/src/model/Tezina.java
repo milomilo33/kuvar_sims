@@ -1,6 +1,8 @@
 package model;
 
-public enum Tezina {
+import java.io.Serializable;
+
+public enum Tezina implements Serializable {
 	lAKO,
 	SREDNJE,
 	TESKO;

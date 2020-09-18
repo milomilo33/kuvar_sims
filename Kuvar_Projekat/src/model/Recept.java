@@ -183,7 +183,7 @@ public class Recept implements Serializable {
 						val2 += this.namirniceSaSastojanjem.get(entry1.getKey()).getKolicina()*1000;
 					if(this.namirniceSaSastojanjem.get(entry1.getKey()).getMernaJedinica().equals(MernaJedinica.MG))
 						val2 += this.namirniceSaSastojanjem.get(entry1.getKey()).getKolicina();
-					if(val1 > val2)
+					if(val1 < val2)
 						receptProveren = false;
 				}else receptProveren = false;		
 		}

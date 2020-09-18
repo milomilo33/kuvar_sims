@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Sastojanje implements Serializable{
+public class Sastojanje implements Serializable {
 	private Float kolicina;
 	private MernaJedinica mernaJedinica;
 	public Sastojanje() {}

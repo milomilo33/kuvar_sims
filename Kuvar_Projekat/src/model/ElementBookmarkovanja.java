@@ -1,6 +1,8 @@
 package model;
 
-public abstract class ElementBookmarkovanja {
+import java.io.Serializable;
+
+public abstract class ElementBookmarkovanja implements Serializable {
 	protected String naziv;
 	
 	public String getNaziv() {
