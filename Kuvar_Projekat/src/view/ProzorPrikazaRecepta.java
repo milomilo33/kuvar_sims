@@ -1,11 +1,5 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 import controller.KontrolerBookmarkovanja;
 import controller.KontrolerProzoraKomentarisanjaRecepta;
 import controller.KontrolerProzoraPrikazaRecepta;
@@ -16,19 +10,13 @@ import model.Namirnica;
 import model.Recept;
 import model.Sastojanje;
 
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.awt.event.ActionEvent;
 
 public class ProzorPrikazaRecepta implements Observer{
 
@@ -37,7 +25,7 @@ public class ProzorPrikazaRecepta implements Observer{
 	private AtomicBoolean porukaPretplate = new AtomicBoolean();
 	private KontrolerProzoraPrikazaRecepta kontroler;
 	private boolean tip;
-	
+
 	private JDialog frmRecept;
 	private JTextField textFieldNaziv;
 	private JTextField textFieldTezina;
@@ -45,6 +33,7 @@ public class ProzorPrikazaRecepta implements Observer{
 	private JTextField textFieldAutor;
 	private JButton btnPretplatiSe = new JButton("Pretplati se");
 	private JButton btnKomentarisi = new JButton("Komentarisi");
+	private JButton btnBookmarkuj = new JButton("Bookmarkuj");
 
 	/**
 	 * Launch the application.
@@ -197,7 +186,6 @@ public class ProzorPrikazaRecepta implements Observer{
 		btnNewButton.setBounds(576, 463, 181, 23);
 		frmRecept.getContentPane().add(btnNewButton);
 		
-		JButton btnBookmarkuj = new JButton("Bookmarkuj");
 		btnBookmarkuj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//OVDE DODAJ ZA BOOKMARKE STVAR, imas atribute [aplikacija] i [recept]-recept koji se bookmarkuje
@@ -234,9 +222,10 @@ public class ProzorPrikazaRecepta implements Observer{
 	}
 	
 	private void postaviPogled() {
-		if(tip) {
+		if (tip) {
 			btnPretplatiSe.setVisible(false);
 			btnKomentarisi.setText("Komentari");
+			btnBookmarkuj.setVisible(false);
 		}
 	}
 	

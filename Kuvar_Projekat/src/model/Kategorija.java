@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class Kategorija implements Serializable {
 	private Integer sifraKategorije;
@@ -39,17 +40,22 @@ public class Kategorija implements Serializable {
 		this.potkategorije = potkategorije;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof Kategorija))
-			return false;
-		Kategorija c = (Kategorija) o;
-		return naziv.equals(c.getNaziv()) && sifraKategorije.equals(c.getSifraKategorije());
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Kategorija))
+            return false;
+        Kategorija c = (Kategorija) o;
+        return naziv.equals(c.getNaziv()) && sifraKategorije.equals(c.getSifraKategorije());
+    }
 
-	public String toString() {
-		return naziv;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(sifraKategorije, naziv, potkategorije);
+    }
+
+    public String toString() {
+        return naziv;
+    }
 }

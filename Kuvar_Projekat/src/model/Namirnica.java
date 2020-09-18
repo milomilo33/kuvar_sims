@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Namirnica implements Serializable {
 	private Integer sifraNamirnice;
@@ -39,9 +40,13 @@ public class Namirnica implements Serializable {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this)
-            return true; 
-        Namirnica c = (Namirnica) o; 
-        return naziv.equals(c.getNaziv()); 
+			return true;
+		Namirnica c = (Namirnica) o;
+		return naziv.equals(c.getNaziv());
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(sifraNamirnice, naziv);
+	}
 }
